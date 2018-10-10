@@ -1,4 +1,4 @@
-![](https://api.travis-ci.org/28Smiles/jdbi-modules.svg?branch=master)
+[![](https://api.travis-ci.org/28Smiles/jdbi-modules.svg?branch=master)](https://travis-ci.org/28Smiles/jdbi-modules)
 
 # Jdbi-Modules
 
