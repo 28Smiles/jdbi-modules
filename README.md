@@ -1,3 +1,5 @@
+![](https://api.travis-ci.org/28Smiles/jdbi-modules.svg?branch=master)
+
 # Jdbi-Modules
 
 The Jdbi-Modules library provides an interface to write convenient modular sql and map it back into entities.
