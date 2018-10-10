@@ -27,9 +27,11 @@ publishing {
     repositories {
         maven {
             url = "https://oss.sonatype.org/service/local/staging/deploy/maven2"
+            def user = project.hasProperty('mavenUser') ? mavenUser : "Unknown user"
+            def pass = project.hasProperty('mavenPassword') ? mavenPassword : "Unknown password"
             credentials {
-                username "$mavenUser"
-                password "$mavenPassword"
+                username user
+                password pass
             }
         }
     }
