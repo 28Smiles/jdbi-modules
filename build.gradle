@@ -1,0 +1,6 @@
+apply from: "$rootDir/gradle/plugins/junit5.gradle"
+apply from: "$rootDir/gradle/plugins/jacoco.gradle"
+apply from: "$rootDir/gradle/plugins/checkstyle.gradle"
+
+group 'jdbi-modules'
+version '0.1'

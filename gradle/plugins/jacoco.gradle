@@ -1,0 +1,14 @@
+apply plugin: "java"
+apply plugin: "jacoco"
+
+jacoco {
+    toolVersion = "0.8.2"
+}
+
+task jacoco(dependsOn: [test, jacocoTestReport, jacocoTestCoverageVerification])
+
+jacocoTestReport {
+    reports {
+        html.enabled = true
+    }
+}
