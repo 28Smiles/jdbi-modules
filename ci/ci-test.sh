@@ -1,4 +1,6 @@
 #!/bin/sh
 set -xe
 
-exec gradlew checkstyle jacoco
+echo `pwd`
+
+./gradlew checkstyle jacoco
