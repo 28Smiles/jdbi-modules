@@ -1,13 +1,8 @@
 apply plugin: "java"
 apply plugin: "jacoco"
-apply plugin: 'com.github.kt3k.coveralls'
 
 jacoco {
     toolVersion = "0.8.2"
-}
-
-coveralls {
-    jacocoReportPath "${jacoco.reportsDir}/test/jacocoTestReport.xml"
 }
 
 task jacoco(dependsOn: [test, jacocoTestReport, jacocoTestCoverageVerification])
