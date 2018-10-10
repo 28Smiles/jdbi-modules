@@ -1,0 +1,12 @@
+language: java
+
+sudo: false
+
+matrix:
+  include:
+  - script:
+    - ci/ci-test.sh
+    jdk: oraclejdk10
+  - script:
+    - ci/ci-test.sh
+    jdk: oraclejdk11

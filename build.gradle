@@ -3,4 +3,4 @@ apply from: "$rootDir/gradle/plugins/jacoco.gradle"
 apply from: "$rootDir/gradle/plugins/checkstyle.gradle"
 
 group 'jdbi-modules'
-version '0.1'
+version '0.0.0'

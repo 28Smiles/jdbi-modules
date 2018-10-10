@@ -1,9 +1,10 @@
 apply from: "$rootDir/gradle/plugins/junit5.gradle"
 apply from: "$rootDir/gradle/plugins/jacoco.gradle"
 apply from: "$rootDir/gradle/plugins/checkstyle.gradle"
+apply from: "$rootDir/gradle/plugins/maven.gradle"
 
 group 'jdbi-modules'
-version '0.1'
+version '0.0.0'
 
 sourceCompatibility = 10
 
