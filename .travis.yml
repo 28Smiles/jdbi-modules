@@ -2,6 +2,10 @@ language: java
 
 sudo: false
 
+env:
+  global:
+  - COVERALLS_REPO_TOKEN=mySecRetRepoToken
+
 matrix:
   include:
   - script:
