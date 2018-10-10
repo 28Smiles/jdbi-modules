@@ -3,4 +3,4 @@ set -xe
 
 echo `pwd`
 
-./gradlew checkstyle jacoco
+./gradlew checkstyleMain jacoco
