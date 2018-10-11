@@ -10,3 +10,7 @@ matrix:
   - script:
     - ci/ci-test.sh
     jdk: oraclejdk11
+
+cache:
+  directories:
+  - $HOME/.gradle
