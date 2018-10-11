@@ -18,6 +18,19 @@ public interface StructuredSqlGenerator extends jdbi_modules.SqlGenerator<Struct
     Pattern PATTERN = Pattern.compile("\\{\\{\\s*((\\d*)\\s*,\\s*)?(\\p{Alpha}\\w*)?\\s*}}");
 
     /**
+     * @param modulePrefix the prefix-stack
+     * @param sql          the sql
+     * @return the routed sql
+     */
+    private static String route(@NotNull final Stack<String> modulePrefix, @NotNull final String sql) {
+        return PATTERN.matcher(sql).replaceAll(matchResult -> {
+            final String id = matchResult.group(2);
+            final String name = matchResult.group(3);
+            return '"' + modulePrefix.get(modulePrefix.size() - 1 - (Objects.isNull(id) ? 0 : Integer.parseInt(id))) + name + '"';
+        });
+    }
+
+    /**
      * @return the select part of the query.
      */
     @NotNull
@@ -77,18 +90,5 @@ public interface StructuredSqlGenerator extends jdbi_modules.SqlGenerator<Struct
         sqlType.sortOrder += (!sqlType.sortOrder.isEmpty() && !getSortOrder().isEmpty() ? ',' : "") + route(modulePrefix, getSortOrder());
         queryModifiers.stream().map(qm -> sqlType.applyQueryModifier(qm, queryModifierNameGenerator)).forEach(queryModifierApplier::add);
         return sqlType;
-    }
-
-    /**
-     * @param modulePrefix the prefix-stack
-     * @param sql          the sql
-     * @return the routed sql
-     */
-    private static String route(@NotNull final Stack<String> modulePrefix, @NotNull final String sql) {
-        return PATTERN.matcher(sql).replaceAll(matchResult -> {
-            final String id = matchResult.group(2);
-            final String name = matchResult.group(3);
-            return '"' + modulePrefix.get(modulePrefix.size() - 1 - (Objects.isNull(id) ? 0 : Integer.parseInt(id))) + name + '"';
-        });
     }
 }

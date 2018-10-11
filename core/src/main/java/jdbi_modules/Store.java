@@ -7,20 +7,6 @@ import java.util.Map;
  */
 public interface Store {
     /**
-     * @param key the type of object to access from the store
-     * @param <B> the type accessed
-     * @return the object found
-     */
-    <B> B require(Class<B> key);
-
-    /**
-     * @param key the type of object to access from the store
-     * @param value the value to store
-     * @param <B> the type of the object
-     */
-    <B> void place(Class<B> key, B value);
-
-    /**
      * @param storeMap the map to create the store of
      * @return the created store
      */
@@ -38,4 +24,18 @@ public interface Store {
             }
         };
     }
+
+    /**
+     * @param key the type of object to access from the store
+     * @param <B> the type accessed
+     * @return the object found
+     */
+    <B> B require(Class<B> key);
+
+    /**
+     * @param key   the type of object to access from the store
+     * @param value the value to store
+     * @param <B>   the type of the object
+     */
+    <B> void place(Class<B> key, B value);
 }

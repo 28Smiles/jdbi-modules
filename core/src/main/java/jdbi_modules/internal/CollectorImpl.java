@@ -21,10 +21,10 @@ import java.util.function.Consumer;
  * @since 14.04.2018
  */
 class CollectorImpl<CollectionType extends Collection<Type>, Type> implements Collector<CollectionType, Type> {
-    private CollectionType collection;
     private final RowView rowView;
     private final ResultSet resultSet;
     private final StatementContext context;
+    private CollectionType collection;
     private BiFunction<Type, Type, Boolean> comparator = Object::equals;
     private List<Type> added = new ArrayList<>();
 

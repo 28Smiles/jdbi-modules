@@ -17,7 +17,7 @@ public interface QueryModifier {
     String getName();
 
     /**
-     * @param query the query
+     * @param query   the query
      * @param newName the new generic name of the query modifier
      */
     void apply(Query query, String newName);

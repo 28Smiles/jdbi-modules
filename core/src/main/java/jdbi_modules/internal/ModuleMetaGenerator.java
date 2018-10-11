@@ -89,6 +89,35 @@ public class ModuleMetaGenerator<Type, KeyType, SqlType extends jdbi_modules.Sql
                 submodules.entrySet().stream().collect(Collectors.toMap(Map.Entry::getKey, e -> e.getValue().initialize(resultSet, statementContext))));
     }
 
+    private Query createQuery(final Handle handle) {
+        final Set<Consumer<Query>> queryModifierApplyer = new HashSet<>();
+        final Query query = handle.select(genSql(queryModifierApplyer).toQuery());
+        queryModifierApplyer.forEach(qm -> {
+            qm.accept(query);
+        });
+        return query;
+    }
+
+    /**
+     * Executes the generator, creates the query, sends the request and maps.
+     *
+     * @param handle the handle to create the query from
+     * @param seed   the seed of the root module
+     * @param <C>    the seed type
+     * @return the seed, filled with the mapped values
+     */
+    public <C extends Collection<Type>> C run(final Handle handle, final C seed) {
+        return createQuery(handle).scanResultSet(((resultSetSupplier, ctx) -> {
+            final ResultSet resultSet = resultSetSupplier.get();
+            final ModuleMetaImpl<Type, KeyType, SqlType, Generator> initialize = initialize(resultSet, ctx);
+
+            while (resultSet.next()) {
+                initialize.call(seed);
+            }
+            return seed;
+        }));
+    }
+
     /**
      * @param <Type>      The Type this module maps to
      * @param <KeyType>   The Type of the Key, to access this modules submodules
@@ -180,34 +209,5 @@ public class ModuleMetaGenerator<Type, KeyType, SqlType extends jdbi_modules.Sql
             prototype.map(collector, this, rowView, store);
             collector.applyOnAdded(enricher);
         }
-    }
-
-    private Query createQuery(final Handle handle) {
-        final Set<Consumer<Query>> queryModifierApplyer = new HashSet<>();
-        final Query query = handle.select(genSql(queryModifierApplyer).toQuery());
-        queryModifierApplyer.forEach(qm -> {
-            qm.accept(query);
-        });
-        return query;
-    }
-
-    /**
-     * Executes the generator, creates the query, sends the request and maps.
-     *
-     * @param handle the handle to create the query from
-     * @param seed   the seed of the root module
-     * @param <C>    the seed type
-     * @return the seed, filled with the mapped values
-     */
-    public <C extends Collection<Type>> C run(final Handle handle, final C seed) {
-        return createQuery(handle).scanResultSet(((resultSetSupplier, ctx) -> {
-            final ResultSet resultSet = resultSetSupplier.get();
-            final ModuleMetaImpl<Type, KeyType, SqlType, Generator> initialize = initialize(resultSet, ctx);
-
-            while (resultSet.next()) {
-                initialize.call(seed);
-            }
-            return seed;
-        }));
     }
 }
