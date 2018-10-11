@@ -2,5 +2,6 @@ apply from: "$rootDir/gradle/plugins/junit5.gradle"
 apply from: "$rootDir/gradle/plugins/jacoco.gradle"
 apply from: "$rootDir/gradle/plugins/checkstyle.gradle"
 
-group 'jdbi-modules'
-version '0.0.0'
+group 'com.github.28Smiles.jdbi-modules'
+version '0.0.1'
+description 'An Api for modular sqlquerys and mapping in java'

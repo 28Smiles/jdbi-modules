@@ -1,4 +1,5 @@
-apply plugin: "maven-publish"
+apply plugin: "maven"
+apply plugin: "signing"
 
 task sourcesJar(type: Jar) {
     classifier = 'sources'
@@ -10,28 +11,58 @@ task javadocJar(type: Jar) {
     from javadoc.destinationDir
 }
 
-publishing {
-    publications {
-        mavenJava(MavenPublication) {
-            from components.java
+artifacts {
+    archives jar
+    archives javadocJar
+    archives sourcesJar
+}
+
+signing {
+    useGpgCmd()
+    sign configurations.archives
+}
+
+uploadArchives {
+    repositories {
+        mavenDeployer {
+            def username = project.hasProperty('mavenUser') ? mavenUser : "Unknown user"
+            def password = project.hasProperty('mavenPassword') ? mavenPassword : "Unknown password"
+            beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
+
+            repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2") {
+                authentication(userName: username, password: password)
+            }
 
             jar {
                 from "$rootDir/LICENSE.txt"
             }
 
-            artifact sourcesJar
-            artifact javadocJar
-        }
-    }
+            pom.project {
+                name 'Jdbi-Modules'
+                description 'An Api for modular SQL-Querys and Mapping in java'
+                url 'https://github.com/28Smiles/jdbi-modules/'
 
-    repositories {
-        maven {
-            url = "https://oss.sonatype.org/service/local/staging/deploy/maven2"
-            def user = project.hasProperty('mavenUser') ? mavenUser : "Unknown user"
-            def pass = project.hasProperty('mavenPassword') ? mavenPassword : "Unknown password"
-            credentials {
-                username user
-                password pass
+                scm {
+                    connection 'scm:git@github.com:28Smiles/jdbi-modules.git'
+                    developerConnection 'scm:git@github.com:28Smiles/jdbi-modules.git'
+                    url 'https://github.com/28Smiles/jdbi-modules/'
+                }
+
+                licenses {
+                    license {
+                        name 'The Apache Software License, Version 2.0'
+                        url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                        distribution 'repo'
+                    }
+                }
+
+                developers {
+                    developer {
+                        id '28Smiles'
+                        name 'Leon Camus'
+                        url 'https://github.com/28Smiles'
+                    }
+                }
             }
         }
     }
