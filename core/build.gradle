@@ -23,4 +23,5 @@ dependencies {
     testCompile group: 'ru.yandex.qatools.embed', name: 'postgresql-embedded', version: '2.9'
     testCompile group: 'org.paumard', name: 'streams-utils', version: '2.0'
     testCompile group: 'postgresql', name: 'postgresql', version: '9.1-901-1.jdbc4'
+    testCompile group: 'org.mockito', name: 'mockito-core', version: '2.23.0'
 }
