@@ -9,6 +9,7 @@ matrix:
     jdk: oraclejdk10
   - script:
     - ci/ci-test.sh
+    - bash <(curl -s https://codecov.io/bash)
     jdk: oraclejdk11
 
 cache:
