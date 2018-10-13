@@ -6,6 +6,7 @@ import jdbi_modules.extension.PostgresExtension;
 import jdbi_modules.bean.Bean;
 import jdbi_modules.bean.Master;
 import jdbi_modules.bean.Pool;
+import jdbi_modules.realistic.module.FilteredMasterModule;
 import jdbi_modules.realistic.module.MasterModule;
 import jdbi_modules.realistic.module.PoolModule;
 import jdbi_modules.realistic.module.WorkerModule;
@@ -16,8 +17,10 @@ import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -62,5 +65,20 @@ public class TestRealistic1 {
             });
             assertThat(zippedPools.getFirst()).containsExactlyInAnyOrderElementsOf(zippedPools.getSecond());
         });
+    }
+
+    @Test
+    void realisticTestTripleFiltered1(final Jdbi jdbi) {
+        final Set<Master> masters = jdbi.withHandle(handle -> new FilteredMasterModule(new ArrayList<>(List.of(
+                scene.getMasters().get(0).getId()))).addModule(new PoolModule().addModule(new WorkerModule())).run(handle, new HashSet<>()));
+        assertThat(masters).containsExactly(scene.getMasters().get(0));
+    }
+
+    @Test
+    void realisticTestTripleFiltered2(final Jdbi jdbi) {
+        final Set<Master> masters = jdbi.withHandle(handle -> new FilteredMasterModule(new ArrayList<>(List.of(
+                scene.getMasters().get(0).getId(),
+                scene.getMasters().get(1).getId()))).addModule(new PoolModule().addModule(new WorkerModule())).run(handle, new HashSet<>()));
+        assertThat(masters).containsExactly(scene.getMasters().get(0), scene.getMasters().get(1));
     }
 }
