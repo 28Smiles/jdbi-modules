@@ -18,6 +18,12 @@ public interface ModuleMeta<Type, KeyType> {
     String getModulePrefix();
 
     /**
+     * @return the module store
+     */
+    @NotNull
+    Store getStore();
+
+    /**
      * @param key              the key
      * @param collection       the collection
      * @param <T>              the type of the elements of the collection

@@ -161,6 +161,12 @@ public class ModuleMetaGenerator<Type, KeyType, SqlType extends jdbi_modules.Sql
             return prefix;
         }
 
+        @NotNull
+        @Override
+        public Store getStore() {
+            return store;
+        }
+
         @Override
         @SuppressWarnings("unchecked")
         public <T, CollectionType extends Collection<T>> void callSubmodule(final @NotNull KeyType key, final @NotNull CollectionType collection) {
