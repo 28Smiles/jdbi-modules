@@ -71,7 +71,7 @@ public class TestRealistic1 {
     void realisticTestTripleFiltered1(final Jdbi jdbi) {
         final Set<Master> masters = jdbi.withHandle(handle -> new FilteredMasterModule(new ArrayList<>(List.of(
                 scene.getMasters().get(0).getId()))).addModule(new PoolModule().addModule(new WorkerModule())).run(handle, new HashSet<>()));
-        assertThat(masters).containsExactly(scene.getMasters().get(0));
+        assertThat(masters).containsExactlyInAnyOrder(scene.getMasters().get(0));
     }
 
     @Test
@@ -79,6 +79,6 @@ public class TestRealistic1 {
         final Set<Master> masters = jdbi.withHandle(handle -> new FilteredMasterModule(new ArrayList<>(List.of(
                 scene.getMasters().get(0).getId(),
                 scene.getMasters().get(1).getId()))).addModule(new PoolModule().addModule(new WorkerModule())).run(handle, new HashSet<>()));
-        assertThat(masters).containsExactly(scene.getMasters().get(0), scene.getMasters().get(1));
+        assertThat(masters).containsExactlyInAnyOrder(scene.getMasters().get(0), scene.getMasters().get(1));
     }
 }
