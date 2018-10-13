@@ -8,11 +8,12 @@ It is built on top of [Jdbi](http://jdbi.org/).
 TODO
 
 ## Prerequisites
-Jdbi-Modules requires Java 10.
+The Libary supports Java 10 and 11.
 
 ## License
 This project is licensed under the [Apache 2.0 license](https://www.apache.org/licenses/LICENSE-2.0.html).
 
 ## Special Thanks
-- [Jdbi](http://jdbi.org/)
+- [Jdbi](http://jdbi.org/), for providing such a good leightweight interface in Java to Sql databases
 - [The Nabla e-Learning tool](https://nabla.algo.informatik.tu-darmstadt.de/)
+- [dhardtke](https://github.com/dhardtke), for the idea of Sql-Modules
