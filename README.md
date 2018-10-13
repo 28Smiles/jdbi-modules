@@ -1,5 +1,7 @@
 <!-- TODO logo -->
-[![](https://api.travis-ci.org/28Smiles/jdbi-modules.svg?branch=master)](https://travis-ci.org/28Smiles/jdbi-modules)[![codecov](https://codecov.io/gh/28Smiles/jdbi-modules/branch/master/graph/badge.svg)](https://codecov.io/gh/28Smiles/jdbi-modules)
+[![Travis CI](https://api.travis-ci.org/28Smiles/jdbi-modules.svg?branch=master)](https://travis-ci.org/28Smiles/jdbi-modules)
+[![codecov](https://codecov.io/gh/28Smiles/jdbi-modules/branch/master/graph/badge.svg)](https://codecov.io/gh/28Smiles/jdbi-modules)
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.github.28Smiles.jdbi-modules/core/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.github.28Smiles.jdbi-modules/core)
 
 Jdbi-Modules provides a well-tested facility of classes to implement modular SQL queries which allow for convenient access to the database.
 It is built on top of [Jdbi](http://jdbi.org/).
