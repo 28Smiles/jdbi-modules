@@ -5,9 +5,17 @@ sudo: false
 matrix:
   include:
   - script:
+    services:
+      - postgresql
+    before_script:
+      - psql -c 'create database ci_test_database;' -U postgres
     - ci/ci-test.sh
     jdk: oraclejdk10
   - script:
+    services:
+      - postgresql
+    before_script:
+      - psql -c 'create database ci_test_database;' -U postgres
     - ci/ci-test.sh
     - bash <(curl -s https://codecov.io/bash)
     jdk: oraclejdk11

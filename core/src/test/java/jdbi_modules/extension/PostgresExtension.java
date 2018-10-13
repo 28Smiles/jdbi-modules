@@ -1,5 +1,6 @@
 package jdbi_modules.extension;
 
+import io.github.cdimascio.dotenv.Dotenv;
 import org.junit.jupiter.api.extension.AfterAllCallback;
 import org.junit.jupiter.api.extension.AfterEachCallback;
 import org.junit.jupiter.api.extension.BeforeAllCallback;
@@ -13,6 +14,7 @@ import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Objects;
 
 /**
  * @since 14.04.2018
@@ -50,24 +52,36 @@ public class PostgresExtension implements BeforeEachCallback, AfterEachCallback,
     public void afterAll(final ExtensionContext context) throws Exception {
         final ExtensionContext.Store store = context.getStore(ExtensionContext.Namespace.GLOBAL);
         final EmbeddedPostgres postgres = (EmbeddedPostgres) store.get("postgres");
-        postgres.stop();
+        if (postgres != null) {
+            postgres.stop();
+        }
     }
 
     @Override
     public void beforeAll(final ExtensionContext context) throws Exception {
-        final EmbeddedPostgres postgres = new EmbeddedPostgres(Version.V10_3);
-        postgres.start(EmbeddedPostgres.DEFAULT_HOST, 5422, EmbeddedPostgres.DEFAULT_DB_NAME);
-        final PGSimpleDataSource dataSource = new PGSimpleDataSource();
-        dataSource.setServerName(EmbeddedPostgres.DEFAULT_HOST);
-        dataSource.setPortNumber(5422);
-        dataSource.setDatabaseName(EmbeddedPostgres.DEFAULT_DB_NAME);
-        dataSource.setUser(EmbeddedPostgres.DEFAULT_USER);
-        dataSource.setPassword(EmbeddedPostgres.DEFAULT_PASSWORD);
-
-        dropAll(dataSource, EmbeddedPostgres.DEFAULT_USER);
-
         final ExtensionContext.Store store = context.getStore(ExtensionContext.Namespace.GLOBAL);
-        store.put("postgres", postgres);
-        store.put("dataSource", dataSource);
+        final Dotenv dotenv = Dotenv.load();
+        if (dotenv.get("DEDICATED_TEST_DATABASE_HOST") == null) {
+            final EmbeddedPostgres postgres = new EmbeddedPostgres(Version.V10_3);
+            postgres.start(EmbeddedPostgres.DEFAULT_HOST, 5422, EmbeddedPostgres.DEFAULT_DB_NAME);
+            final PGSimpleDataSource dataSource = new PGSimpleDataSource();
+            dataSource.setServerName(EmbeddedPostgres.DEFAULT_HOST);
+            dataSource.setPortNumber(5422);
+            dataSource.setDatabaseName(EmbeddedPostgres.DEFAULT_DB_NAME);
+            dataSource.setUser(EmbeddedPostgres.DEFAULT_USER);
+            dataSource.setPassword(EmbeddedPostgres.DEFAULT_PASSWORD);
+
+            dropAll(dataSource, EmbeddedPostgres.DEFAULT_USER);
+            store.put("postgres", postgres);
+            store.put("dataSource", dataSource);
+        } else {
+            final PGSimpleDataSource dataSource = new PGSimpleDataSource();
+            dataSource.setServerName(dotenv.get("DEDICATED_TEST_DATABASE_HOST"));
+            dataSource.setPortNumber(Integer.parseInt(Objects.requireNonNull(dotenv.get("DEDICATED_TEST_DATABASE_PORT"))));
+            dataSource.setDatabaseName(dotenv.get("DEDICATED_TEST_DATABASE_NAME"));
+            dataSource.setUser(dotenv.get("DEDICATED_TEST_DATABASE_USER"));
+            dataSource.setPassword(dotenv.get("DEDICATED_TEST_DATABASE_PASSWORD"));
+            store.put("dataSource", dataSource);
+        }
     }
 }

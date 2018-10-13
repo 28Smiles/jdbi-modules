@@ -24,4 +24,5 @@ dependencies {
     testCompile group: 'org.paumard', name: 'streams-utils', version: '2.0'
     testCompile group: 'postgresql', name: 'postgresql', version: '9.1-901-1.jdbc4'
     testCompile group: 'org.mockito', name: 'mockito-core', version: '2.23.0'
+    testCompile group: 'io.github.cdimascio', name: 'java-dotenv', version: '3.1.2'
 }
