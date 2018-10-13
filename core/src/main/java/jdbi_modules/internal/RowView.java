@@ -20,6 +20,7 @@ import java.util.stream.Collectors;
  *
  * @since 14.04.2018
  */
+@SuppressWarnings({"unused", "WeakerAccess"})
 public class RowView {
     private final String modulePrefix;
 
@@ -77,7 +78,7 @@ public class RowView {
         }
     }
 
-    private RowMapper<?> rowMapperFor(final Type type) throws SQLException {
+    private RowMapper<?> rowMapperFor(final Type type) {
         if (rowMappers.containsKey(type)) {
             return rowMappers.get(type);
         }

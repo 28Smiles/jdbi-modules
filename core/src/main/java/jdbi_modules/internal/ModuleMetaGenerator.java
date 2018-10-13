@@ -92,9 +92,7 @@ public class ModuleMetaGenerator<Type, KeyType, SqlType extends jdbi_modules.Sql
     private Query createQuery(final Handle handle) {
         final Set<Consumer<Query>> queryModifierApplyer = new HashSet<>();
         final Query query = handle.select(genSql(queryModifierApplyer).toQuery());
-        queryModifierApplyer.forEach(qm -> {
-            qm.accept(query);
-        });
+        queryModifierApplyer.forEach(qm -> qm.accept(query));
         return query;
     }
 
@@ -124,6 +122,7 @@ public class ModuleMetaGenerator<Type, KeyType, SqlType extends jdbi_modules.Sql
      * @param <SqlType>   The SqlType of the SqlGenerator
      * @param <Generator> The Type of the SqlGenerator
      */
+    @SuppressWarnings("WeakerAccess")
     static final class ModuleMetaImpl<Type, KeyType, SqlType extends jdbi_modules.SqlType, Generator extends SqlGenerator<SqlType>> implements ModuleMeta<Type, KeyType> {
         private final String prefix;
         private final ResultSet resultSet;
