@@ -60,7 +60,7 @@ public class PostgresExtension implements BeforeEachCallback, AfterEachCallback,
     @Override
     public void beforeAll(final ExtensionContext context) throws Exception {
         final ExtensionContext.Store store = context.getStore(ExtensionContext.Namespace.GLOBAL);
-        final Dotenv dotenv = Dotenv.load();
+        final Dotenv dotenv = Dotenv.configure().ignoreIfMissing().load();
         if (dotenv.get("DEDICATED_TEST_DATABASE_HOST") == null) {
             final EmbeddedPostgres postgres = new EmbeddedPostgres(Version.V10_3);
             postgres.start(EmbeddedPostgres.DEFAULT_HOST, 5422, EmbeddedPostgres.DEFAULT_DB_NAME);
