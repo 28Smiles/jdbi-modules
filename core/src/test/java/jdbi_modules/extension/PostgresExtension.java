@@ -62,6 +62,7 @@ public class PostgresExtension implements BeforeEachCallback, AfterEachCallback,
         final ExtensionContext.Store store = context.getStore(ExtensionContext.Namespace.GLOBAL);
         final Dotenv dotenv = Dotenv.configure().ignoreIfMissing().load();
         if (dotenv.get("DEDICATED_TEST_DATABASE_HOST") == null) {
+            System.out.println("Did not find a dedicated Database, using embedded postgres...");
             final EmbeddedPostgres postgres = new EmbeddedPostgres(Version.V10_3);
             postgres.start(EmbeddedPostgres.DEFAULT_HOST, 5422, EmbeddedPostgres.DEFAULT_DB_NAME);
             final PGSimpleDataSource dataSource = new PGSimpleDataSource();
@@ -75,6 +76,7 @@ public class PostgresExtension implements BeforeEachCallback, AfterEachCallback,
             store.put("postgres", postgres);
             store.put("dataSource", dataSource);
         } else {
+            System.out.println("Found a dedicated Database, using dedicated postgres...");
             final PGSimpleDataSource dataSource = new PGSimpleDataSource();
             dataSource.setServerName(dotenv.get("DEDICATED_TEST_DATABASE_HOST"));
             dataSource.setPortNumber(Integer.parseInt(Objects.requireNonNull(dotenv.get("DEDICATED_TEST_DATABASE_PORT"))));
