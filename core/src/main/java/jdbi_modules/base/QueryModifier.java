@@ -14,11 +14,6 @@ abstract class QueryModifier<Type> implements jdbi_modules.QueryModifier {
     }
 
     @Override
-    public final String getInSql() {
-        return ':' + name;
-    }
-
-    @Override
     public final String getName() {
         return name;
     }

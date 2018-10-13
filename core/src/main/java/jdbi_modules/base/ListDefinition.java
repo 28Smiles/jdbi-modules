@@ -17,6 +17,11 @@ public final class ListDefinition extends QueryModifier<List<?>> {
     }
 
     @Override
+    public String getInSql() {
+        return '<' + getName() + '>';
+    }
+
+    @Override
     public void apply(final Query query, final String newName) {
         query.defineList(newName, getValue());
     }

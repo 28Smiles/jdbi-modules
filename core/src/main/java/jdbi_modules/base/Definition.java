@@ -15,6 +15,11 @@ public final class Definition extends QueryModifier<Object> {
     }
 
     @Override
+    public String getInSql() {
+        return '<' + getName() + '>';
+    }
+
+    @Override
     public void apply(final Query query, final String newName) {
         query.define(newName, getValue());
     }
