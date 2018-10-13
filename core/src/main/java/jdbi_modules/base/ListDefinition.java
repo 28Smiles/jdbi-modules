@@ -7,12 +7,12 @@ import java.util.List;
 /**
  * @since 14.04.2018
  */
-public final class ListBinding extends QueryModifier<List<?>> {
+public final class ListDefinition extends QueryModifier<List<?>> {
     /**
      * @param name  the name of the binding
      * @param value the value of the binding
      */
-    public ListBinding(final String name, final List<?> value) {
+    public ListDefinition(final String name, final List<?> value) {
         super(name, value);
     }
 
