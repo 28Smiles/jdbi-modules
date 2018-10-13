@@ -32,7 +32,7 @@ public class PoolModule extends Module<Pool, Class<?>, StructuredSql, Structured
 
     @NotNull
     @Override
-    public Map<Type, Function<String, RowMapper>> rowMapper() {
+    public Map<Type, Function<String, RowMapper<?>>> rowMapper() {
         return Map.of(
                 Pool.class, prefix -> FieldMapper.of(Pool.class, prefix)
         );

@@ -30,7 +30,7 @@ public class RowView {
     private final Map<Type, RowMapper<?>> rowMappers = new ConcurrentHashMap<>();
     private final Map<Type, ColumnMapper<?>> columnMappers;
 
-    RowView(final String modulePrefix, final Map<Type, Function<String, RowMapper>> rowMapperFactorys,
+    RowView(final String modulePrefix, final Map<Type, Function<String, RowMapper<?>>> rowMapperFactorys,
             final Map<Type, ColumnMapper<?>> commonColumnMapperMap,
             final ResultSet rs,
             final StatementContext ctx) {

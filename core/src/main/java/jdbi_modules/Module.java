@@ -53,7 +53,7 @@ public abstract class Module<Type, KeyType, SqlType extends jdbi_modules.SqlType
      * @return the map of row-mappers of this module
      */
     @NotNull
-    public abstract Map<java.lang.reflect.Type, Function<String, RowMapper>> rowMapper();
+    public abstract Map<java.lang.reflect.Type, Function<String, RowMapper<?>>> rowMapper();
 
     /**
      * @return the SqlGenerator of this module

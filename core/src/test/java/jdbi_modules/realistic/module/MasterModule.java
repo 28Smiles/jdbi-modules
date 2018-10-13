@@ -32,7 +32,7 @@ public class MasterModule extends Module<Master, Class<?>, StructuredSql, Struct
 
     @NotNull
     @Override
-    public Map<Type, Function<String, RowMapper>> rowMapper() {
+    public Map<Type, Function<String, RowMapper<?>>> rowMapper() {
         return Map.of(
                 Master.class, prefix -> FieldMapper.of(Master.class, prefix)
         );
