@@ -2,6 +2,7 @@ package jdbi_modules;
 
 import jdbi_modules.bean.Master;
 import jdbi_modules.bean.Pool;
+import jdbi_modules.bean.User;
 import jdbi_modules.bean.Worker;
 import org.jdbi.v3.core.Jdbi;
 
@@ -18,7 +19,8 @@ import java.util.stream.IntStream;
 public class Scene1 {
     private static final String insertMaster = "INSERT INTO master (id, name) VALUES (:id, :name)";
     private static final String insertPool = "INSERT INTO pool (id, master_id, name) VALUES (:id, :master.id, :name)";
-    private static final String insertWorker = "INSERT INTO worker (id, pool_id, position, name) VALUES (:id, :pool.id, :position, :name)";
+    private static final String insertWorker = "INSERT INTO worker (id, pool_id, user_id, position, name) VALUES (:id, :pool.id, :user.id, :position, :name)";
+    private static final String insertUser = "INSERT INTO \"user\" (id, name) VALUES (:id, :name)";
 
     private List<Master> masters = new ArrayList<>();
     private List<Pool> pools = new ArrayList<>();
@@ -28,7 +30,8 @@ public class Scene1 {
         jdbi.useHandle(handle -> {
             handle.createUpdate("CREATE TABLE master (id BIGINT PRIMARY KEY, name TEXT)").execute();
             handle.createUpdate("CREATE TABLE pool (id BIGINT PRIMARY KEY, master_id BIGINT, name TEXT)").execute();
-            handle.createUpdate("CREATE TABLE worker (id BIGINT PRIMARY KEY, pool_id BIGINT, position INT, name TEXT)").execute();
+            handle.createUpdate("CREATE TABLE worker (id BIGINT PRIMARY KEY, user_id BIGINT, pool_id BIGINT, position INT, name TEXT)").execute();
+            handle.createUpdate("CREATE TABLE \"user\" (id BIGINT PRIMARY KEY, name TEXT)").execute();
         });
 
         jdbi.useHandle(handle -> {
@@ -48,7 +51,10 @@ public class Scene1 {
             i = 0;
             for (final Pool pool : masters.stream().map(Master::getPools).map(Set::stream).flatMap(s -> s).collect(Collectors.toList())) {
                 final int off = (int) (Math.random() * 16);
-                IntStream.range(i, i + off).mapToObj(id -> new Worker(id, "pool" + id, pool, (int) (Math.random() * 99999999))).forEach(worker -> {
+                IntStream.range(i, i + off).mapToObj(id -> {
+                    User user = new User(id, "user" + id);
+                    return new Worker(id, "pool" + id, user, (int) (Math.random() * 99999999), pool);
+                }).forEach(worker -> {
                     pool.getWorkers().add(worker);
                     workers.add(worker);
                 });
@@ -62,6 +68,7 @@ public class Scene1 {
                     handle.createUpdate(insertPool).bindBean(pool).execute();
                     pool.getWorkers().forEach(worker -> {
                         handle.createUpdate(insertWorker).bindBean(worker).execute();
+                        handle.createUpdate(insertUser).bindBean(worker.getUser()).execute();
                     });
                 });
             });

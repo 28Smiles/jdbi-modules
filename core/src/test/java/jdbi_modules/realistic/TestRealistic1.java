@@ -1,14 +1,16 @@
 package jdbi_modules.realistic;
 
 import jdbi_modules.Scene1;
-import jdbi_modules.extension.JdbiExtension;
-import jdbi_modules.extension.PostgresExtension;
 import jdbi_modules.bean.Bean;
 import jdbi_modules.bean.Master;
 import jdbi_modules.bean.Pool;
+import jdbi_modules.bean.Worker;
+import jdbi_modules.extension.JdbiExtension;
+import jdbi_modules.extension.PostgresExtension;
 import jdbi_modules.realistic.module.FilteredMasterModule;
 import jdbi_modules.realistic.module.MasterModule;
 import jdbi_modules.realistic.module.PoolModule;
+import jdbi_modules.realistic.module.UserModule;
 import jdbi_modules.realistic.module.WorkerModule;
 import jdbi_modules.util.Zipped;
 import org.jdbi.v3.core.Jdbi;
@@ -22,6 +24,7 @@ import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.paumard.streams.StreamsUtils.zip;
@@ -46,7 +49,9 @@ public class TestRealistic1 {
 
     @RepeatedTest(20)
     void realisticTestDouble(final Jdbi jdbi) {
-        final Set<Master> masters = jdbi.withHandle(handle -> new MasterModule().addModule(new PoolModule()).run(handle, new HashSet<>()));
+        final Set<Master> masters = jdbi.withHandle(
+                handle -> new MasterModule()
+                        .addModule(new PoolModule()).run(handle, new HashSet<>()));
         assertThat(masters).containsExactlyInAnyOrderElementsOf(masters);
         zip(masters.stream().sorted(Comparator.comparingLong(Bean::getId)).map(Master::getPools), this.scene.getMasters().stream().map(Master::getPools), Zipped::new).forEach(zipped -> {
             assertThat(zipped.getFirst()).containsExactlyInAnyOrderElementsOf(zipped.getSecond());
@@ -55,13 +60,36 @@ public class TestRealistic1 {
 
     @RepeatedTest(40)
     void realisticTestTriple(final Jdbi jdbi) {
-        final Set<Master> masters = jdbi.withHandle(handle -> new MasterModule().addModule(new PoolModule().addModule(new WorkerModule())).run(handle, new HashSet<>()));
+        final Set<Master> masters = jdbi.withHandle(
+                handle -> new MasterModule()
+                        .addModule(new PoolModule()
+                                .addModule(new WorkerModule())).run(handle, new HashSet<>()));
         assertThat(masters).containsExactlyInAnyOrderElementsOf(masters);
         zip(masters.stream().sorted(Comparator.comparingLong(Bean::getId)).map(Master::getPools),
                 this.scene.getMasters().stream().map(Master::getPools), Zipped::new).forEach(zippedPools -> {
             zip(zippedPools.getFirst().stream().sorted(Comparator.comparingLong(Bean::getId)).map(Pool::getWorkers),
                     zippedPools.getSecond().stream().sorted(Comparator.comparingLong(Bean::getId)).map(Pool::getWorkers), Zipped::new).forEach(zippedWorker -> {
                 assertThat(zippedWorker.getFirst()).containsExactlyElementsOf(zippedWorker.getSecond());
+            });
+            assertThat(zippedPools.getFirst()).containsExactlyInAnyOrderElementsOf(zippedPools.getSecond());
+        });
+    }
+
+    @RepeatedTest(40)
+    void realisticTestQuadruple(final Jdbi jdbi) {
+        final Set<Master> masters = jdbi.withHandle(
+                handle -> new MasterModule()
+                        .addModule(new PoolModule()
+                                .addModule(new WorkerModule()
+                                        .addModule(new UserModule()))).run(handle, new HashSet<>()));
+        assertThat(masters).containsExactlyInAnyOrderElementsOf(masters);
+        zip(masters.stream().sorted(Comparator.comparingLong(Bean::getId)).map(Master::getPools),
+                this.scene.getMasters().stream().map(Master::getPools), Zipped::new).forEach(zippedPools -> {
+            zip(zippedPools.getFirst().stream().sorted(Comparator.comparingLong(Bean::getId)).map(Pool::getWorkers),
+                    zippedPools.getSecond().stream().sorted(Comparator.comparingLong(Bean::getId)).map(Pool::getWorkers), Zipped::new).forEach(zippedWorker -> {
+                assertThat(zippedWorker.getFirst()).containsExactlyElementsOf(zippedWorker.getSecond());
+                assertThat(zippedWorker.getFirst().stream().map(Worker::getUser).collect(Collectors.toList()))
+                        .containsExactlyElementsOf(zippedWorker.getSecond().stream().map(Worker::getUser).collect(Collectors.toList()));
             });
             assertThat(zippedPools.getFirst()).containsExactlyInAnyOrderElementsOf(zippedPools.getSecond());
         });

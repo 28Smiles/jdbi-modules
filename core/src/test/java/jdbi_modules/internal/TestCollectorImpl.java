@@ -19,9 +19,9 @@ import static org.mockito.Mockito.mock;
  * @since 14.04.2018
  */
 class TestCollectorImpl {
-    private Worker worker1 = new Worker(1, "Gunter", null, 1);
-    private Worker worker2 = new Worker(1, "Gunter", null, 1);
-    private Worker worker3 = new Worker(2, "Gert", null, 2);
+    private Worker worker1 = new Worker(1, "Gunter", null, 1, null);
+    private Worker worker2 = new Worker(1, "Gunter", null, 1, null);
+    private Worker worker3 = new Worker(2, "Gert", null, 2, null);
     private final List<Worker> workers = List.of(worker1, worker2, worker3);
 
     @Test
