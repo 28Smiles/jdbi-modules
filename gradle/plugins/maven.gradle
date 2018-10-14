@@ -1,5 +1,5 @@
 def ci = System.getenv('DEPLOYER')
-if (ci != null && "true" == ci) {
+if ("true" == ci) {
 
     apply plugin: "maven"
     apply plugin: "signing"
