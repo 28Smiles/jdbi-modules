@@ -5,6 +5,7 @@ import jdbi_modules.ModuleMeta;
 import jdbi_modules.SqlGenerator;
 import jdbi_modules.Store;
 import org.jdbi.v3.core.Handle;
+import org.jdbi.v3.core.generic.GenericType;
 import org.jdbi.v3.core.mapper.ColumnMapper;
 import org.jdbi.v3.core.statement.Query;
 import org.jdbi.v3.core.statement.StatementContext;
@@ -16,6 +17,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
@@ -195,6 +197,30 @@ public class ModuleMetaGenerator<Type, KeyType, SqlType extends jdbi_modules.Sql
             if (Objects.nonNull(fallbackMeta)) {
                 fallbackMeta.call(collection);
             }
+        }
+
+        @Override
+        @SuppressWarnings("unchecked")
+        public <T> T callSubmodule(final @NotNull KeyType key, final @NotNull Class<T> type) {
+            final ModuleMetaImpl<T, KeyType, SqlType, SqlGenerator<SqlType>> module = (ModuleMetaImpl<T, KeyType, SqlType, SqlGenerator<SqlType>>) submodules.get(key);
+            if (Objects.nonNull(module)) {
+                LinkedList<T> list = new LinkedList<>();
+                module.call(list);
+                return list.getFirst();
+            }
+            final FallbackMeta<T> fallbackMeta = (FallbackMeta<T>) fallbacks.get(key);
+            if (Objects.nonNull(fallbackMeta)) {
+                LinkedList<T> list = new LinkedList<>();
+                fallbackMeta.call(list);
+                return list.getFirst();
+            }
+            return null;
+        }
+
+        @Override
+        @SuppressWarnings("unchecked")
+        public <T> T callSubmodule(final @NotNull KeyType key, final @NotNull GenericType<T> type) {
+            return (T) callSubmodule(key, Object.class);
         }
 
         public <CollectionType extends Collection<Type>> void call(final @NotNull CollectionType collection) {
