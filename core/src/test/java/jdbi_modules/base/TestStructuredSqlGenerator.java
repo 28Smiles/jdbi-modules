@@ -4,6 +4,7 @@ import jdbi_modules.internal.PrefixGenerator;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.Test;
 
+import java.util.HashSet;
 import java.util.Set;
 import java.util.Stack;
 
@@ -14,14 +15,14 @@ public class TestStructuredSqlGenerator {
 
     @Test
     void testAppend() {
-        new None().append(Set.of(), new PrefixGenerator(""), Set.of(),
-                new None().sql(Set.of(), new PrefixGenerator(""), Set.of(), new Stack<>()), new Stack<>());
-        new None().append(Set.of(), new PrefixGenerator(""), Set.of(),
-                new Full().sql(Set.of(), new PrefixGenerator(""), Set.of(), new Stack<>()), new Stack<>());
-        new Full().append(Set.of(), new PrefixGenerator(""), Set.of(),
-                new Full().sql(Set.of(), new PrefixGenerator(""), Set.of(), new Stack<>()), new Stack<>());
-        new Full().append(Set.of(), new PrefixGenerator(""), Set.of(),
-                new None().sql(Set.of(), new PrefixGenerator(""), Set.of(), new Stack<>()), new Stack<>());
+        new None().append(new HashSet<>(), new PrefixGenerator(""), Set.of(),
+                new None().sql(new HashSet<>(), new PrefixGenerator(""), Set.of(), new Stack<>()), new Stack<>());
+        new None().append(new HashSet<>(), new PrefixGenerator(""), Set.of(),
+                new Full().sql(new HashSet<>(), new PrefixGenerator(""), Set.of(), new Stack<>()), new Stack<>());
+        new Full().append(new HashSet<>(), new PrefixGenerator(""), Set.of(new Binding("lu", 12)),
+                new Full().sql(new HashSet<>(), new PrefixGenerator(""), Set.of(new Binding("lu", 12)), new Stack<>()), new Stack<>());
+        new Full().append(new HashSet<>(), new PrefixGenerator(""), Set.of(),
+                new None().sql(new HashSet<>(), new PrefixGenerator(""), Set.of(), new Stack<>()), new Stack<>());
     }
 
     private class None implements StructuredSqlGenerator {
