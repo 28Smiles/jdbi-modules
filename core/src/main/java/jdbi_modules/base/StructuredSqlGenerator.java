@@ -84,8 +84,8 @@ public interface StructuredSqlGenerator extends jdbi_modules.SqlGenerator<Struct
                                  @NotNull final StructuredSql sqlType,
                                  @NotNull final Stack<String> modulePrefix) {
         sqlType.select += (!sqlType.select.isEmpty() && !getSelect().isEmpty() ? ',' : ' ') + route(modulePrefix, getSelect());
-        sqlType.from += (!sqlType.from.isEmpty() && !getSortOrder().isEmpty() ? ' ' : "") + route(modulePrefix, getFrom());
-        sqlType.joins += (!sqlType.joins.isEmpty() && !getSortOrder().isEmpty() ? ' ' : "") + route(modulePrefix, getJoins());
+        sqlType.from += (!sqlType.from.isEmpty() && !getFrom().isEmpty() ? ' ' : "") + route(modulePrefix, getFrom());
+        sqlType.joins += (!sqlType.joins.isEmpty() && !getJoins().isEmpty() ? ' ' : "") + route(modulePrefix, getJoins());
         sqlType.filter += (!sqlType.filter.isEmpty() && !getFilter().isEmpty() ? " AND " : "") + route(modulePrefix, getFilter());
         sqlType.sortOrder += (!sqlType.sortOrder.isEmpty() && !getSortOrder().isEmpty() ? ',' : "") + route(modulePrefix, getSortOrder());
         queryModifiers.stream().map(qm -> sqlType.applyQueryModifier(qm, queryModifierNameGenerator)).forEach(queryModifierApplier::add);
