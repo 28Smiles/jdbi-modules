@@ -19,19 +19,12 @@ import java.util.Objects;
 /**
  * @since 14.04.2018
  */
-public class PostgresExtension implements BeforeEachCallback, AfterEachCallback, BeforeAllCallback, AfterAllCallback {
+public class PostgresExtension implements BeforeEachCallback, BeforeAllCallback, AfterAllCallback {
     @Override
     public void beforeEach(final ExtensionContext context) throws Exception {
         final ExtensionContext.Store store = context.getStore(ExtensionContext.Namespace.GLOBAL);
-        final DataSource dataSource = (DataSource) store.get("dataSource");
-        dropAll(dataSource, EmbeddedPostgres.DEFAULT_USER);
-    }
-
-    @Override
-    public void afterEach(final ExtensionContext context) {
-        final ExtensionContext.Store store = context.getStore(ExtensionContext.Namespace.GLOBAL);
-        final DataSource dataSource = (DataSource) store.get("dataSource");
-        dropAll(dataSource, EmbeddedPostgres.DEFAULT_USER);
+        final PGSimpleDataSource dataSource = (PGSimpleDataSource) store.get("dataSource");
+        dropAll(dataSource, dataSource.getUser());
     }
 
     private static void dropAll(final DataSource dataSource, final String user) {
@@ -72,7 +65,6 @@ public class PostgresExtension implements BeforeEachCallback, AfterEachCallback,
             dataSource.setUser(EmbeddedPostgres.DEFAULT_USER);
             dataSource.setPassword(EmbeddedPostgres.DEFAULT_PASSWORD);
 
-            dropAll(dataSource, EmbeddedPostgres.DEFAULT_USER);
             store.put("postgres", postgres);
             store.put("dataSource", dataSource);
         } else {
