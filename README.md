@@ -8,7 +8,11 @@ Jdbi-Modules provides a well-tested facility of classes to implement modular SQL
 It is built on top of [Jdbi](http://jdbi.org/).
 
 ## Getting started
-TODO
+The Libary is build with gradle.
+
+    $ gradle initialize
+
+The tests use the Postgres database. If not provided with an external Postgres database, it will use [Embedded Postgres](https://github.com/yandex-qatools/postgresql-embedded).
 
 ## Prerequisites
 The Libary supports Java 10 and 11.
