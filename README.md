@@ -10,7 +10,7 @@ It is built on top of [Jdbi](http://jdbi.org/).
 ## Getting started
 The Libary is build with gradle.
 
-    $ gradle initialize
+    $ gradle assemble
 
 The tests use the Postgres database. If not provided with an external Postgres database, it will use [Embedded Postgres](https://github.com/yandex-qatools/postgresql-embedded).
 
