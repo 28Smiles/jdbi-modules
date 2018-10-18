@@ -12,7 +12,7 @@ The Libary is build with gradle.
 
     $ gradle assemble
 
-The tests use the Postgres database. If not provided with an external Postgres database, it will use [Embedded Postgres](https://github.com/yandex-qatools/postgresql-embedded).
+The tests use a Postgres database. If not provided with an external Postgres database, it will use [Embedded Postgres](https://github.com/yandex-qatools/postgresql-embedded).
 
 ## Prerequisites
 The Libary supports Java 10 and 11.
