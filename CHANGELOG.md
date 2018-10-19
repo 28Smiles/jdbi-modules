@@ -1,3 +1,7 @@
+# v0.1.2
+
+- Added default methods to the StructuredSqlGenerator interface
+
 # v0.1.1
 
 - Fixed an error in the StructuredSqlGenerator implementation
