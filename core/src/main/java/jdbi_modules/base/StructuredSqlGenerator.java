@@ -34,31 +34,41 @@ public interface StructuredSqlGenerator extends jdbi_modules.SqlGenerator<Struct
      * @return the select part of the query.
      */
     @NotNull
-    String getSelect();
+    default String getSelect() {
+        return "";
+    }
 
     /**
      * @return the part of the from clause of the query.
      */
     @NotNull
-    String getFrom();
+    default String getFrom() {
+        return "";
+    }
 
     /**
      * @return the joins of the query.
      */
     @NotNull
-    String getJoins();
+    default String getJoins() {
+        return "";
+    }
 
     /**
      * @return the sort orders of the query.
      */
     @NotNull
-    String getSortOrder();
+    default String getSortOrder() {
+        return "";
+    }
 
     /**
      * @return the filters of the query.
      */
     @NotNull
-    String getFilter();
+    default String getFilter() {
+        return "";
+    }
 
     @NotNull
     @Override
