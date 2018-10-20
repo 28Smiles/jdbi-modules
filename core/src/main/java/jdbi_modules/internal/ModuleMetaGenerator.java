@@ -206,13 +206,13 @@ public class ModuleMetaGenerator<Type, KeyType, SqlType extends jdbi_modules.Sql
             if (Objects.nonNull(module)) {
                 LinkedList<T> list = new LinkedList<>();
                 module.call(list);
-                return list.getFirst();
+                return list.stream().findFirst().orElse(null);
             }
             final FallbackMeta<T> fallbackMeta = (FallbackMeta<T>) fallbacks.get(key);
             if (Objects.nonNull(fallbackMeta)) {
                 LinkedList<T> list = new LinkedList<>();
                 fallbackMeta.call(list);
-                return list.getFirst();
+                return list.stream().findFirst().orElse(null);
             }
             return null;
         }
