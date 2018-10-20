@@ -1,3 +1,7 @@
+# v0.1.3
+
+- Added Cte's to structured sql generator
+
 # v0.1.2
 
 - Added default methods to the StructuredSqlGenerator interface

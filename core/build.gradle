@@ -4,7 +4,7 @@ apply from: "$rootDir/gradle/plugins/checkstyle.gradle"
 apply from: "$rootDir/gradle/plugins/maven.gradle"
 
 group 'com.github.28Smiles.jdbi-modules'
-version '0.1.2'
+version '0.1.3'
 description 'The core functionalitys of the jdbi-modules-api'
 
 sourceCompatibility = 10

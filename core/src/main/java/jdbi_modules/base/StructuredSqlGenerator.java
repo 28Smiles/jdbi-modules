@@ -39,6 +39,14 @@ public interface StructuredSqlGenerator extends jdbi_modules.SqlGenerator<Struct
     }
 
     /**
+     * @return the part of the cte clause of the query.
+     */
+    @NotNull
+    default String getCte() {
+        return "";
+    }
+
+    /**
      * @return the part of the from clause of the query.
      */
     @NotNull
@@ -77,6 +85,7 @@ public interface StructuredSqlGenerator extends jdbi_modules.SqlGenerator<Struct
                               @NotNull final Set<QueryModifier> queryModifiers,
                               @NotNull final Stack<String> modulePrefix) {
         final StructuredSql structuredSql = new StructuredSql(
+                route(modulePrefix, getCte()),
                 route(modulePrefix, getSelect()),
                 route(modulePrefix, getFrom()),
                 route(modulePrefix, getJoins()),
@@ -93,7 +102,8 @@ public interface StructuredSqlGenerator extends jdbi_modules.SqlGenerator<Struct
                                  @NotNull final Set<QueryModifier> queryModifiers,
                                  @NotNull final StructuredSql sqlType,
                                  @NotNull final Stack<String> modulePrefix) {
-        sqlType.select += (!sqlType.select.isEmpty() && !getSelect().isEmpty() ? ',' : ' ') + route(modulePrefix, getSelect());
+        sqlType.cte += (!sqlType.cte.isEmpty() && !getCte().isEmpty() ? ',' : "") + route(modulePrefix, getCte());
+        sqlType.select += (!sqlType.select.isEmpty() && !getSelect().isEmpty() ? ',' : "") + route(modulePrefix, getSelect());
         sqlType.from += (!sqlType.from.isEmpty() && !getFrom().isEmpty() ? ' ' : "") + route(modulePrefix, getFrom());
         sqlType.joins += (!sqlType.joins.isEmpty() && !getJoins().isEmpty() ? ' ' : "") + route(modulePrefix, getJoins());
         sqlType.filter += (!sqlType.filter.isEmpty() && !getFilter().isEmpty() ? " AND " : "") + route(modulePrefix, getFilter());

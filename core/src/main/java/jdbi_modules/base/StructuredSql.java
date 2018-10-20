@@ -13,6 +13,9 @@ import java.util.function.Consumer;
  */
 public class StructuredSql implements SqlType {
     @SuppressWarnings("VisibilityModifier")
+    String cte;
+
+    @SuppressWarnings("VisibilityModifier")
     String select;
 
     @SuppressWarnings("VisibilityModifier")
@@ -27,7 +30,8 @@ public class StructuredSql implements SqlType {
     @SuppressWarnings("VisibilityModifier")
     String sortOrder;
 
-    StructuredSql(final String select, final String from, final String joins, final String filter, final String sortOrder) {
+    StructuredSql(final String cte, final String select, final String from, final String joins, final String filter, final String sortOrder) {
+        this.cte = cte;
         this.select = select;
         this.from = from;
         this.joins = joins;
@@ -37,7 +41,8 @@ public class StructuredSql implements SqlType {
 
     @Override
     public final String toQuery() {
-        return "SELECT " + select + " FROM " + from + " " + joins + " WHERE " + (filter.isEmpty() ? "TRUE" : filter) + " " + (sortOrder.isEmpty() ? "" : "ORDER BY " + sortOrder);
+        return (cte.isEmpty() ? "" : "WITH RECURSIVE " + cte) + " SELECT " + select + " FROM " + from + " " + joins
+                + " WHERE " + (filter.isEmpty() ? "TRUE" : filter) + " " + (sortOrder.isEmpty() ? "" : "ORDER BY " + sortOrder);
     }
 
     /**
@@ -51,6 +56,7 @@ public class StructuredSql implements SqlType {
         final String queryModifierName = queryModifierNameGenerator.next();
         final String inSql = queryModifier.getInSql();
         final String name = queryModifier.getName();
+        cte = cte.replace(inSql, inSql.replace(name, queryModifierName));
         select = select.replace(inSql, inSql.replace(name, queryModifierName));
         from = from.replace(inSql, inSql.replace(name, queryModifierName));
         joins = joins.replace(inSql, inSql.replace(name, queryModifierName));
