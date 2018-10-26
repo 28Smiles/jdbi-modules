@@ -6,7 +6,7 @@ import jdbi_modules.bean.Master;
 import jdbi_modules.extension.JdbiExtension;
 import jdbi_modules.extension.PostgresExtension;
 import jdbi_modules.realistic.module.FilteredMasterModule;
-import jdbi_modules.realistic.module.MasterModule;
+import org.assertj.core.api.Assertions;
 import org.jdbi.v3.core.Jdbi;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

@@ -2,6 +2,7 @@ package jdbi_modules.base;
 
 import jdbi_modules.extension.JdbiExtension;
 import jdbi_modules.extension.PostgresExtension;
+import org.assertj.core.api.AssertionsForClassTypes;
 import org.jdbi.v3.core.Jdbi;
 import org.jdbi.v3.core.statement.Query;
 import org.junit.jupiter.api.Test;
@@ -47,7 +48,7 @@ public class TestQueryModifier {
             assertThat(binding.getInSql()).isEqualTo(":name1");
             assertThat(binding.getName()).isEqualTo("name1");
             assertThat(binding.getValue()).isSameAs(number);
-            assertThat(query.mapTo(Integer.class).findOnly()).isEqualTo(number);
+            AssertionsForClassTypes.assertThat(query.mapTo(Integer.class).findOnly()).isEqualTo(number);
         });
     }
 

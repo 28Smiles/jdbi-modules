@@ -82,7 +82,7 @@ public interface StructuredSqlGenerator extends jdbi_modules.SqlGenerator<Struct
     @Override
     default StructuredSql sql(@NotNull final Set<Consumer<Query>> queryModifierApplier,
                               @NotNull final Iterator<String> queryModifierNameGenerator,
-                              @NotNull final Set<QueryModifier> queryModifiers,
+                              @NotNull final Set<jdbi_modules.QueryModifier> queryModifiers,
                               @NotNull final Stack<String> modulePrefix) {
         final StructuredSql structuredSql = new StructuredSql(
                 route(modulePrefix, getCte()),
