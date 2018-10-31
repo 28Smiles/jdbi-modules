@@ -18,7 +18,7 @@ public final class PrefixGenerator implements Iterator<String> {
 
     @Override
     public boolean hasNext() {
-        return true;
+        return i < Integer.MAX_VALUE;
     }
 
     @Override
