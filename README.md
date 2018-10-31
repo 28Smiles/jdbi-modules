@@ -9,7 +9,7 @@ It is built on top of [Jdbi](http://jdbi.org/).
 
 ## Getting started
 ### Prerequisites
-The Libary supports Java 10 and 11.
+This library supports Java 10 and 11.
 
 ## Contributing
 ### Build

@@ -48,9 +48,8 @@ public abstract class Module<Type, KeyType, SqlType extends jdbi_modules.SqlType
     public abstract Set<QueryModifier> queryModifiers();
 
     /**
-     * The returned row-mappers will be available in the row-view. The Type has to equal the row-mapper type.
-     *
-     * @return the map of row-mappers of this module
+     * @return the {@link RowMapper}s available in the {@link RowView} for this module.
+     * The key of the {@link Map} ("type") has to equal the {@link RowMapper}'s generic type.
      */
     @NotNull
     public abstract Map<java.lang.reflect.Type, Function<String, RowMapper<?>>> rowMapper();
@@ -72,10 +71,10 @@ public abstract class Module<Type, KeyType, SqlType extends jdbi_modules.SqlType
     }
 
     /**
-     * @param collector  the collector
-     * @param moduleMeta the meta of the module
-     * @param rowView    the row-view
-     * @param store      the store
+     * @param collector  the {@link Collector}
+     * @param moduleMeta the {@link ModuleMeta}
+     * @param rowView    the {@link RowView}
+     * @param store      the {@link Store}
      */
     public abstract void map(@NotNull Collector<Collection<Type>, Type> collector,
                              @NotNull ModuleMeta<Type, KeyType> moduleMeta,
@@ -85,10 +84,10 @@ public abstract class Module<Type, KeyType, SqlType extends jdbi_modules.SqlType
     /**
      * Runs the module.
      *
-     * @param handle the handle to use
+     * @param handle the {@link Handle} to use
      * @param seed   the seed to map to
-     * @param <C>    the type of the collection
-     * @return the collection
+     * @param <C>    the type of the {@link Collection}
+     * @return the {@link Collection}
      */
     public <C extends Collection<Type>> C run(final Handle handle, final C seed) {
         final PrefixGenerator prefixGenerator = new PrefixGenerator("mod");
