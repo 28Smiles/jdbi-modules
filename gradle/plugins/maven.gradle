@@ -1,8 +1,6 @@
-def ci = System.getenv('DEPLOYER')
-if ("true" == ci) {
-
-    apply plugin: "maven"
-    apply plugin: "signing"
+if ('true' == System.getenv('DEPLOYER')) {
+    apply plugin: 'maven'
+    apply plugin: 'signing'
 
     task sourcesJar(type: Jar) {
         classifier = 'sources'
@@ -28,21 +26,21 @@ if ("true" == ci) {
     uploadArchives {
         repositories {
             mavenDeployer {
-                def username = project.hasProperty('mavenUser') ? mavenUser : "Unknown user"
-                def password = project.hasProperty('mavenPassword') ? mavenPassword : "Unknown password"
+                def username = project.hasProperty('mavenUser') ? mavenUser : 'Unknown user'
+                def password = project.hasProperty('mavenPassword') ? mavenPassword : 'Unknown password'
                 beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
 
-                repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2") {
+                repository(url: 'https://oss.sonatype.org/service/local/staging/deploy/maven2') {
                     authentication(userName: username, password: password)
                 }
 
                 jar {
-                    from "$rootDir/LICENSE.txt"
+                    from '$rootDir/LICENSE.txt'
                 }
 
                 pom.project {
-                    name 'Jdbi-Modules'
-                    description 'An Api for modular SQL-Querys and Mapping in java'
+                    name project.name
+                    description project.description
                     url 'https://github.com/28Smiles/jdbi-modules/'
 
                     scm {
