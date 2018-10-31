@@ -41,8 +41,8 @@ public class StructuredSql implements SqlType {
 
     @Override
     public final String toQuery() {
-        return (cte.isEmpty() ? "" : "WITH RECURSIVE " + cte) + " SELECT " + select + " FROM " + from + " " + joins
-                + " WHERE " + (filter.isEmpty() ? "TRUE" : filter) + " " + (sortOrder.isEmpty() ? "" : "ORDER BY " + sortOrder);
+        return (cte.isEmpty() ? "" : "WITH RECURSIVE " + cte + " ") + "SELECT " + select + " FROM " + from + " " + joins
+                + (filter.isEmpty() ? "" : " WHERE " + filter) + (sortOrder.isEmpty() ? "" : " ORDER BY " + sortOrder);
     }
 
     /**
