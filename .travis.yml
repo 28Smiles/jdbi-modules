@@ -2,13 +2,19 @@ language: java
 
 sudo: false
 
+services:
+- postgresql
+before_script:
+- psql -c 'create database ci_test_database;' -U postgres
+
 matrix:
   include:
   - script:
     - ci/ci-test.sh
-    jdk: oraclejdk10
+    jdk: openjdk10
   - script:
     - ci/ci-test.sh
+    - bash <(curl -s https://codecov.io/bash)
     jdk: oraclejdk11
 
 cache:
