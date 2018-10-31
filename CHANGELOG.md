@@ -1,6 +1,7 @@
 # v0.2.1
 
-- Fix Prefix generator overflow
+- Fix PrefixGenerator overflow
+- Fix remove spaces in the generated SQL of StructuredSQLGenerator
 
 # v0.2.0
 
