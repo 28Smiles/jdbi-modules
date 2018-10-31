@@ -14,7 +14,7 @@ repositories {
 }
 
 dependencies {
-    compile group: 'org.jdbi', name: 'jdbi3-sqlobject', version: '3.4.0'
+    compile group: 'org.jdbi', name: 'jdbi3-sqlobject', version: '3.5.1'
     compile group: 'com.rainerhahnekamp', name: 'sneakythrow', version: '1.1.0'
     compile group: 'org.jetbrains', name: 'annotations', version: '13.0'
 
