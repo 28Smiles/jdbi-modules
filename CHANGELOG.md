@@ -1,3 +1,7 @@
+# v0.2.1
+
+- Fix Prefix generator overflow
+
 # v0.2.0
 
 - Fix a bug throwing exception if no element was added
