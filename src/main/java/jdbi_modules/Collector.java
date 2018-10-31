@@ -62,76 +62,76 @@ public interface Collector<CollectionType extends Collection<Type>, Type> {
     Collector<CollectionType, Type> append(@Nullable Type type);
 
     /**
-     * Appends an object fetched from the row-view to the collection if it's not already contained in the collection,
+     * Appends an Object fetched from the {@link jdbi_modules.internal.RowView} to the collection if it's not already contained in the collection,
      * and applies the function on the added or found object.
      *
-     * @param clazz   type of the row-mapper to use
+     * @param clazz   type of {@link RowMapper} to use
      * @param applier a consumer to apply on the accessed object
      * @return this
      */
     Collector<CollectionType, Type> appendUniqueWithRowView(@NotNull Class<Type> clazz, @NotNull Consumer<Type> applier);
 
     /**
-     * Appends an object fetched from the row-view to the collection if it's not already contained in the collection.
+     * Appends an object fetched from the {@link jdbi_modules.internal.RowView} to the collection if it's not already contained in the collection.
      *
-     * @param clazz type of the row-mapper to use
+     * @param clazz type of the {@link RowMapper} to use
      * @return this
      */
     Collector<CollectionType, Type> appendUniqueWithRowView(@NotNull Class<Type> clazz);
 
     /**
-     * Appends an object fetched from the row-view to the collection and applies the function on the added object.
+     * Appends an object fetched from the {@link jdbi_modules.internal.RowView} to the collection and applies the function on the added object.
      *
-     * @param clazz   type of the row-mapper to use
+     * @param clazz   type of the {@link RowMapper} to use
      * @param applier a consumer to apply on the added object
      * @return this
      */
     Collector<CollectionType, Type> appendWithRowView(@NotNull Class<Type> clazz, @NotNull Consumer<Type> applier);
 
     /**
-     * Appends an object fetched from the row-view to the collection.
+     * Appends an object fetched from the {@link jdbi_modules.internal.RowView} to the collection.
      *
-     * @param clazz type of the row-mapper to use
+     * @param clazz type of the {@link RowMapper} to use
      * @return this
      */
     Collector<CollectionType, Type> appendWithRowView(@NotNull Class<Type> clazz);
 
     /**
-     * Appends an object fetched from the row-mapper to the collection if it's not already contained in the collection,
+     * Appends an object fetched from the {@link RowMapper} to the collection if it's not already contained in the collection,
      * and applies the function on the added or found object.
      *
-     * @param rowMapper type of the row-mapper to use
+     * @param rowMapper type of the {@link RowMapper} to use
      * @param applier   a consumer to apply on the accessed object
      * @return this
-     * @throws SQLException a possible exception during the mapping
+     * @throws SQLException if an error during mapping occurs
      */
     Collector<CollectionType, Type> appendUniqueWithRowMapper(@NotNull RowMapper<Type> rowMapper, @NotNull Consumer<Type> applier) throws SQLException;
 
     /**
-     * Appends an object fetched from the row-mapper to the collection if it's not already contained in the collection.
+     * Appends an object fetched from the {@link RowMapper} to the collection if it's not already contained in the collection.
      *
-     * @param rowMapper the row-mapper to use
+     * @param rowMapper the {@link RowMapper} to use
      * @return this
-     * @throws SQLException a possible exception during the mapping
+     * @throws SQLException if an error during mapping occurs
      */
     Collector<CollectionType, Type> appendUniqueWithRowMapper(@NotNull RowMapper<Type> rowMapper) throws SQLException;
 
     /**
-     * Appends an object fetched from the row-mapper to the collection and applies the function on the added object.
+     * Appends an object fetched from the {@link RowMapper} to the collection and applies the function on the added object.
      *
-     * @param rowMapper the row-mapper to use
+     * @param rowMapper the {@link RowMapper} to use
      * @param applier   a consumer to apply on the accessed object
      * @return this
-     * @throws SQLException a possible exception during the mapping
+     * @throws SQLException if an error during mapping occurs
      */
     Collector<CollectionType, Type> appendWithRowMapper(@NotNull RowMapper<Type> rowMapper, @NotNull Consumer<Type> applier) throws SQLException;
 
     /**
-     * Appends an object fetched from the row-mapper to the collection.
+     * Appends an object fetched from the {@link RowMapper} to the collection.
      *
-     * @param rowMapper row-mapper to use
+     * @param rowMapper {@link RowMapper} to use
      * @return this
-     * @throws SQLException a possible exception during the mapping
+     * @throws SQLException if an error during mapping occurs
      */
     Collector<CollectionType, Type> appendWithRowMapper(@NotNull RowMapper<Type> rowMapper) throws SQLException;
 }
