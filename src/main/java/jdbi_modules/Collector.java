@@ -44,7 +44,7 @@ public interface Collector<CollectionType extends Collection<Type>, Type> {
      * @param <T>  the type to filter by
      * @return a filtered stream currently stored in the collector
      */
-    default <T extends Type> List<T> get(@NotNull Class<T> type) {
+    default <T extends Type> Collection<T> get(@NotNull Class<T> type) {
         return stream(type).collect(Collectors.toList());
     }
 
