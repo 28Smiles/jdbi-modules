@@ -6,8 +6,11 @@ import org.jetbrains.annotations.Nullable;
 
 import java.sql.SQLException;
 import java.util.Collection;
+import java.util.List;
 import java.util.function.BiFunction;
 import java.util.function.Consumer;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * @param <CollectionType> the collection type
@@ -19,6 +22,31 @@ public interface Collector<CollectionType extends Collection<Type>, Type> {
      * @return the collection currently stored in the collector
      */
     CollectionType get();
+
+    /**
+     * @return a stream of the items currently stored in the collector
+     */
+    default Stream<Type> stream() {
+        return get().stream();
+    }
+
+    /**
+     * @param type the type of collection to get
+     * @param <T>  the type to filter by
+     * @return a filtered stream of items currently stored in the collector
+     */
+    default <T extends Type> Stream<T> stream(@NotNull Class<T> type) {
+        return get().stream().filter(type::isInstance).map(type::cast);
+    }
+
+    /**
+     * @param type the type of collection to get
+     * @param <T>  the type to filter by
+     * @return a filtered stream currently stored in the collector
+     */
+    default <T extends Type> List<T> get(@NotNull Class<T> type) {
+        return stream(type).collect(Collectors.toList());
+    }
 
     /**
      * @param comparator the comparator to use
