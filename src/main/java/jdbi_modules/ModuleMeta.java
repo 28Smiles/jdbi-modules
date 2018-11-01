@@ -56,4 +56,30 @@ public interface ModuleMeta<Type, KeyType> {
      * @return the value fetched
      */
     <T> T callSubmodule(@NotNull KeyType key, @NotNull GenericType<T> type);
+
+    /**
+     * @param key  the key
+     * @param type the class of the type expected
+     * @param <T>  the type expected
+     * @param enricher         the consumer to apply after adding something to the collection
+     * @return the value fetched
+     */
+    default <T> T callSubmodule(@NotNull KeyType key, @NotNull Class<T> type, Consumer<T> enricher) {
+        final T t = callSubmodule(key, type);
+        enricher.accept(t);
+        return t;
+    }
+
+    /**
+     * @param key  the key
+     * @param type the class of the type expected
+     * @param <T>  the type expected
+     * @param enricher         the consumer to apply after adding something to the collection
+     * @return the value fetched
+     */
+    default <T> T callSubmodule(@NotNull KeyType key, @NotNull GenericType<T> type, Consumer<T> enricher) {
+        final T t = callSubmodule(key, type);
+        enricher.accept(t);
+        return t;
+    }
 }
