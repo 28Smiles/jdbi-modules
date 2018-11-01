@@ -125,7 +125,7 @@ public class ModuleMetaGenerator<Type, KeyType, SqlType extends jdbi_modules.Sql
      * @param <Generator> The Type of the SqlGenerator
      */
     @SuppressWarnings("WeakerAccess")
-    static final class ModuleMetaImpl<Type, KeyType, SqlType extends jdbi_modules.SqlType, Generator extends SqlGenerator<SqlType>> implements ModuleMeta<Type, KeyType> {
+    static final class ModuleMetaImpl<Type, KeyType, SqlType extends jdbi_modules.SqlType, Generator extends SqlGenerator<SqlType>> implements ModuleMeta<KeyType> {
         private final String prefix;
         private final ResultSet resultSet;
         private final StatementContext statementContext;
@@ -171,32 +171,34 @@ public class ModuleMetaGenerator<Type, KeyType, SqlType extends jdbi_modules.Sql
 
         @Override
         @SuppressWarnings("unchecked")
-        public <T, CollectionType extends Collection<T>> void callSubmodule(final @NotNull KeyType key, final @NotNull CollectionType collection) {
+        public <T, CollectionType extends Collection<T>> ModuleMeta<KeyType> callSubmodule(final @NotNull KeyType key, final @NotNull CollectionType collection) {
             final ModuleMetaImpl<T, KeyType, SqlType, SqlGenerator<SqlType>> module = (ModuleMetaImpl<T, KeyType, SqlType, SqlGenerator<SqlType>>) submodules.get(key);
             if (Objects.nonNull(module)) {
                 module.call(collection);
-                return;
+                return this;
             }
             final FallbackMeta<T> fallbackMeta = (FallbackMeta<T>) fallbacks.get(key);
             if (Objects.nonNull(fallbackMeta)) {
                 fallbackMeta.call(collection);
             }
+            return this;
         }
 
         @Override
         @SuppressWarnings("unchecked")
-        public <T, CollectionType extends Collection<T>> void callSubmodule(final @NotNull KeyType key,
+        public <T, CollectionType extends Collection<T>> ModuleMeta<KeyType> callSubmodule(final @NotNull KeyType key,
                                                                             final @NotNull CollectionType collection,
                                                                             final @NotNull Consumer<T> enricher) {
             final ModuleMetaImpl<T, KeyType, SqlType, SqlGenerator<SqlType>> module = (ModuleMetaImpl<T, KeyType, SqlType, SqlGenerator<SqlType>>) submodules.get(key);
             if (Objects.nonNull(module)) {
                 module.call(collection, enricher);
-                return;
+                return this;
             }
             final FallbackMeta<T> fallbackMeta = (FallbackMeta<T>) fallbacks.get(key);
             if (Objects.nonNull(fallbackMeta)) {
                 fallbackMeta.call(collection);
             }
+            return this;
         }
 
         @Override

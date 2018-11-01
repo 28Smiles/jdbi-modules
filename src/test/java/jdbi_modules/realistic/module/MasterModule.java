@@ -40,7 +40,7 @@ public class MasterModule extends Module<Master, Class<?>, StructuredSql, Struct
 
     @Override
     public void map(@NotNull final Collector<Collection<Master>, Master> collector,
-                    @NotNull final ModuleMeta<Master, Class<?>> moduleMeta,
+                    @NotNull final ModuleMeta<Class<?>> moduleMeta,
                     @NotNull final RowView rowView,
                     @NotNull final Store store) {
         if (rowView.getColumn("id", Long.class) != null) {

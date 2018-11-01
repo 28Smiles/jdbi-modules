@@ -7,11 +7,10 @@ import java.util.Collection;
 import java.util.function.Consumer;
 
 /**
- * @param <Type>    The type the corresponding module maps to
  * @param <KeyType> The type of the key the corresponding module uses
  * @since 14.04.2018
  */
-public interface ModuleMeta<Type, KeyType> {
+public interface ModuleMeta<KeyType> {
     /**
      * @return the module prefix
      */
@@ -30,7 +29,7 @@ public interface ModuleMeta<Type, KeyType> {
      * @param <T>              the type of the elements of the collection
      * @param <CollectionType> the type of the collection
      */
-    <T, CollectionType extends Collection<T>> void callSubmodule(@NotNull KeyType key, @NotNull CollectionType collection);
+    <T, CollectionType extends Collection<T>> ModuleMeta<KeyType> callSubmodule(@NotNull KeyType key, @NotNull CollectionType collection);
 
     /**
      * @param key              the key
@@ -39,7 +38,7 @@ public interface ModuleMeta<Type, KeyType> {
      * @param <T>              the type of the elements of the collection
      * @param <CollectionType> the type of the collection
      */
-    <T, CollectionType extends Collection<T>> void callSubmodule(@NotNull KeyType key, @NotNull CollectionType collection, Consumer<T> enricher);
+    <T, CollectionType extends Collection<T>> ModuleMeta<KeyType> callSubmodule(@NotNull KeyType key, @NotNull CollectionType collection, Consumer<T> enricher);
 
     /**
      * @param key  the key

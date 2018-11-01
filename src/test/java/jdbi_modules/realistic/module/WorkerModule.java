@@ -84,7 +84,10 @@ public class WorkerModule extends Module<Worker, Class<?>, StructuredSql, Struct
     }
 
     @Override
-    public void map(@NotNull final Collector<Collection<Worker>, Worker> collector, @NotNull final ModuleMeta<Worker, Class<?>> moduleMeta, @NotNull final RowView rowView, @NotNull final Store store) {
+    public void map(@NotNull final Collector<Collection<Worker>, Worker> collector,
+                    @NotNull final ModuleMeta<Class<?>> moduleMeta,
+                    @NotNull final RowView rowView,
+                    @NotNull final Store store) {
         if (rowView.getColumn("id", Long.class) != null) {
             collector.appendUniqueWithRowView(Worker.class, worker -> {
                 worker.setUser(moduleMeta.callSubmodule(User.class, User.class));

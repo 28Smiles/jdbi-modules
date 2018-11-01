@@ -81,7 +81,7 @@ public class PoolModule extends Module<Pool, Class<?>, StructuredSql, Structured
 
     @Override
     public void map(@NotNull final Collector<Collection<Pool>, Pool> collector,
-                    @NotNull final ModuleMeta<Pool, Class<?>> moduleMeta,
+                    @NotNull final ModuleMeta<Class<?>> moduleMeta,
                     @NotNull final RowView rowView,
                     @NotNull final Store store) {
         if (rowView.getColumn("id", Long.class) != null) {
