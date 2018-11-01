@@ -28,6 +28,7 @@ public interface ModuleMeta<KeyType> {
      * @param collection       the collection
      * @param <T>              the type of the elements of the collection
      * @param <CollectionType> the type of the collection
+     * @return this
      */
     <T, CollectionType extends Collection<T>> ModuleMeta<KeyType> callSubmodule(@NotNull KeyType key, @NotNull CollectionType collection);
 
@@ -37,6 +38,7 @@ public interface ModuleMeta<KeyType> {
      * @param enricher         the consumer to apply after adding something to the collection
      * @param <T>              the type of the elements of the collection
      * @param <CollectionType> the type of the collection
+     * @return this
      */
     <T, CollectionType extends Collection<T>> ModuleMeta<KeyType> callSubmodule(@NotNull KeyType key, @NotNull CollectionType collection, Consumer<T> enricher);
 
@@ -57,10 +59,10 @@ public interface ModuleMeta<KeyType> {
     <T> T callSubmodule(@NotNull KeyType key, @NotNull GenericType<T> type);
 
     /**
-     * @param key  the key
-     * @param type the class of the type expected
-     * @param <T>  the type expected
-     * @param enricher         the consumer to apply after adding something to the collection
+     * @param key      the key
+     * @param type     the class of the type expected
+     * @param <T>      the type expected
+     * @param enricher the consumer to apply after adding something to the collection
      * @return the value fetched
      */
     default <T> T callSubmodule(@NotNull KeyType key, @NotNull Class<T> type, Consumer<T> enricher) {
@@ -70,10 +72,10 @@ public interface ModuleMeta<KeyType> {
     }
 
     /**
-     * @param key  the key
-     * @param type the class of the type expected
-     * @param <T>  the type expected
-     * @param enricher         the consumer to apply after adding something to the collection
+     * @param key      the key
+     * @param type     the class of the type expected
+     * @param <T>      the type expected
+     * @param enricher the consumer to apply after adding something to the collection
      * @return the value fetched
      */
     default <T> T callSubmodule(@NotNull KeyType key, @NotNull GenericType<T> type, Consumer<T> enricher) {
