@@ -1,3 +1,9 @@
+# v0.3.0
+
+- Refactor ModuleMeta to use less generics
+- Add builder pattern to ModuleMeta
+- Add type filter for Collector
+
 # v0.2.1
 
 - Fix PrefixGenerator overflow
