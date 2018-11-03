@@ -11,7 +11,6 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;
 
 /**
@@ -21,6 +20,7 @@ import java.util.function.Function;
  * @param <SqlGenerator> The Type of the SqlGenerator
  * @since 14.04.2018
  */
+@SuppressWarnings("unused")
 public abstract class Module<Type, KeyType, SqlType extends jdbi_modules.SqlType, SqlGenerator extends jdbi_modules.SqlGenerator<SqlType>> {
     private Map<KeyType, Module> submodules = new HashMap<>();
     private Map<KeyType, Fallback<Object>> fallbacks = new HashMap<>();
@@ -91,6 +91,6 @@ public abstract class Module<Type, KeyType, SqlType extends jdbi_modules.SqlType
      */
     public <C extends Collection<Type>> C run(final Handle handle, final C seed) {
         final PrefixGenerator prefixGenerator = new PrefixGenerator("mod");
-        return new ModuleMetaGenerator<>(prefixGenerator, this, Map.of(), new ConcurrentHashMap<>()).run(handle, seed);
+        return new ModuleMetaGenerator<>(prefixGenerator, this, Map.of(), new HashMap<>()).run(handle, seed);
     }
 }
