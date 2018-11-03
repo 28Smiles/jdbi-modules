@@ -59,35 +59,35 @@ public class MasterModule extends Module<Master, Class<?>, StructuredSql, Struct
 
     @NotNull
     @Override
-    public StructuredSqlGenerator getSqlGenerator() {
+    public StructuredSqlGenerator sqlGenerator() {
         return new StructuredSqlGenerator() {
             @NotNull
             @Override
-            public String getSelect() {
+            public String select() {
                 return "{{master}}.id AS {{id}}, {{master}}.name AS {{name}}";
             }
 
             @NotNull
             @Override
-            public String getFrom() {
+            public String from() {
                 return "master {{master}}";
             }
 
             @NotNull
             @Override
-            public String getJoins() {
+            public String joins() {
                 return "";
             }
 
             @NotNull
             @Override
-            public String getSortOrder() {
+            public String sortOrder() {
                 return "";
             }
 
             @NotNull
             @Override
-            public String getFilter() {
+            public String filter() {
                 return "";
             }
         };

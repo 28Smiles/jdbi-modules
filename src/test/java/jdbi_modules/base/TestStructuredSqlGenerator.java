@@ -28,31 +28,31 @@ public class TestStructuredSqlGenerator {
     private class None implements StructuredSqlGenerator {
         @NotNull
         @Override
-        public String getSelect() {
+        public String select() {
             return "";
         }
 
         @NotNull
         @Override
-        public String getFrom() {
+        public String from() {
             return "";
         }
 
         @NotNull
         @Override
-        public String getJoins() {
+        public String joins() {
             return "";
         }
 
         @NotNull
         @Override
-        public String getSortOrder() {
+        public String sortOrder() {
             return "";
         }
 
         @NotNull
         @Override
-        public String getFilter() {
+        public String filter() {
             return "";
         }
     }
@@ -60,31 +60,31 @@ public class TestStructuredSqlGenerator {
     private class Full implements StructuredSqlGenerator {
         @NotNull
         @Override
-        public String getSelect() {
+        public String select() {
             return "A";
         }
 
         @NotNull
         @Override
-        public String getFrom() {
+        public String from() {
             return "A";
         }
 
         @NotNull
         @Override
-        public String getJoins() {
+        public String joins() {
             return "A";
         }
 
         @NotNull
         @Override
-        public String getSortOrder() {
+        public String sortOrder() {
             return "A";
         }
 
         @NotNull
         @Override
-        public String getFilter() {
+        public String filter() {
             return "A";
         }
     }
