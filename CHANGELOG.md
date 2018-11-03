@@ -1,4 +1,5 @@
 - Use a HashMap in the Module instead of an Concurren one.
+- Breaking-Change: Remove the get prefix of all methods of StructuredSqlGenerator
 
 # v0.3.0
 
