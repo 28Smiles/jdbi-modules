@@ -1,3 +1,5 @@
+- Use a HashMap in the Module instead of an Concurren one.
+
 # v0.3.0
 
 - Refactor ModuleMeta to use less generics
