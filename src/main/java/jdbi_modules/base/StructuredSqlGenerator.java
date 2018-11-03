@@ -15,7 +15,7 @@ import java.util.regex.Pattern;
  * @since 14.04.2018
  */
 public interface StructuredSqlGenerator extends jdbi_modules.SqlGenerator<StructuredSql> {
-    Pattern PATTERN = Pattern.compile("\\{\\{\\s*((\\d*)\\s*,\\s*)?([A-Za-z0-9_. \\-><'\"\\x7f-\\xff]+)\\s*}}");
+    Pattern PATTERN = Pattern.compile("\\{\\{\\s*((\\d*)\\s*,\\s*)?([A-Za-z0-9_. \\-><'()\\x7f-\\xff]+)\\s*}}");
 
     /**
      * @param modulePrefix the prefix-stack

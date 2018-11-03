@@ -30,9 +30,17 @@ class TestStructuredSqlGenerator {
     }
 
     @ParameterizedTest
+    @ValueSource(strings = {"\"user\"", ""})
+    void testRoutingRejecting(final String value) {
+        final Stack<String> stack = new Stack<>();
+        stack.push("mod0");
+        assertEquals("{{" + value + "}}", new DynamicSortOrderGenerator(value).sql(new HashSet<>(), new PrefixGenerator(""), Set.of(), stack).sortOrder);
+    }
+
+    @ParameterizedTest
     @ValueSource(strings = {"id", "mod0exercise.name->>'de'", "exercise.id", "exercise_id", "ÄÖÜßäöü", "_", "-", "0123456789", "a<b", "created - updated",
-            "\"user\""})
-    void testRouting(final String value) {
+            "function()"})
+    void testRoutingSuccessful(final String value) {
         final Stack<String> stack = new Stack<>();
         stack.push("mod0");
         assertEquals("\"mod0" + value + "\"", new DynamicSortOrderGenerator(value).sql(new HashSet<>(), new PrefixGenerator(""), Set.of(), stack).sortOrder);
