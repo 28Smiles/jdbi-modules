@@ -1,8 +1,8 @@
 # v1.0.0
 
-- Allow PostgresJSON expression for prefix function
-- Use a HashMap in the Module instead of an Concurrend one.
-- Breaking-Change: Remove the get prefix of all methods of StructuredSqlGenerator
+- Allow Postgres JSON expression for prefix function
+- Use a normal HashMap in the Module instead of an ConcurrentHashMap.
+- Breaking Change: Remove the get prefix of all methods of StructuredSqlGenerator
 
 # v0.3.0
 
