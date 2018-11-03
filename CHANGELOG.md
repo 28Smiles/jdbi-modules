@@ -1,4 +1,4 @@
-# v0.4.0
+# v1.0.0
 
 - Allow PostgresJSON expression for prefix function
 - Use a HashMap in the Module instead of an Concurrend one.
