@@ -58,7 +58,7 @@ public abstract class Module<Type, KeyType, SqlType extends jdbi_modules.SqlType
      * @return the SqlGenerator of this module
      */
     @NotNull
-    public abstract SqlGenerator getSqlGenerator();
+    public abstract SqlGenerator sqlGenerator();
 
     /**
      * A prepare function, allowing the developer to create objects and put them into the store once at the beginning of the mapping.

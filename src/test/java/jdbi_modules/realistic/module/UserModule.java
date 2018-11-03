@@ -39,35 +39,35 @@ public class UserModule extends Module<User, Class<?>, StructuredSql, Structured
 
     @NotNull
     @Override
-    public StructuredSqlGenerator getSqlGenerator() {
+    public StructuredSqlGenerator sqlGenerator() {
         return new StructuredSqlGenerator() {
             @NotNull
             @Override
-            public String getSelect() {
+            public String select() {
                 return "{{user}}.id AS {{id}}, {{user}}.name AS {{name}}";
             }
 
             @NotNull
             @Override
-            public String getFrom() {
+            public String from() {
                 return "";
             }
 
             @NotNull
             @Override
-            public String getJoins() {
+            public String joins() {
                 return "LEFT JOIN \"user\" {{user}} ON {{1, worker}}.user_id = {{user}}.id";
             }
 
             @NotNull
             @Override
-            public String getSortOrder() {
+            public String sortOrder() {
                 return "";
             }
 
             @NotNull
             @Override
-            public String getFilter() {
+            public String filter() {
                 return "";
             }
         };
