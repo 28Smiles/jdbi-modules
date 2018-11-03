@@ -49,35 +49,35 @@ public class WorkerModule extends Module<Worker, Class<?>, StructuredSql, Struct
 
     @NotNull
     @Override
-    public StructuredSqlGenerator getSqlGenerator() {
+    public StructuredSqlGenerator sqlGenerator() {
         return new StructuredSqlGenerator() {
             @NotNull
             @Override
-            public String getSelect() {
+            public String select() {
                 return "{{worker}}.id AS {{id}}, {{worker}}.name AS {{name}}, {{worker}}.position AS {{position}}, {{worker}}.user_id AS {{user_id}}";
             }
 
             @NotNull
             @Override
-            public String getFrom() {
+            public String from() {
                 return "";
             }
 
             @NotNull
             @Override
-            public String getJoins() {
+            public String joins() {
                 return "LEFT JOIN worker {{worker}} ON {{1, pool}}.id = {{worker}}.pool_id";
             }
 
             @NotNull
             @Override
-            public String getSortOrder() {
+            public String sortOrder() {
                 return "{{position}} ASC";
             }
 
             @NotNull
             @Override
-            public String getFilter() {
+            public String filter() {
                 return "";
             }
         };

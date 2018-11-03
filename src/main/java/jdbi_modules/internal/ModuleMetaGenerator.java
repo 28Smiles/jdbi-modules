@@ -62,7 +62,7 @@ public class ModuleMetaGenerator<Type, KeyType, SqlType extends jdbi_modules.Sql
         final Iterator<String> prefixGenerator = new PrefixGenerator("m");
         final Stack<String> prefixStack = new Stack<>();
         prefixStack.push(this.modulePrefix);
-        SqlType sql = prototype.getSqlGenerator().sql(queryModifierApplyer, prefixGenerator, prototype.queryModifiers(), prefixStack);
+        SqlType sql = prototype.sqlGenerator().sql(queryModifierApplyer, prefixGenerator, prototype.queryModifiers(), prefixStack);
         sql = this.appendSqlRecursive(sql, prefixGenerator, queryModifierApplyer, prefixStack);
         return sql;
     }
@@ -71,7 +71,7 @@ public class ModuleMetaGenerator<Type, KeyType, SqlType extends jdbi_modules.Sql
         SqlType sqlAccu = sql;
         for (final ModuleMetaGenerator<Object, Object, SqlType, SqlGenerator<SqlType>> moduleMeta : submodules.values()) {
             prefixStack.push(moduleMeta.modulePrefix);
-            sqlAccu = moduleMeta.prototype.getSqlGenerator().append(queryModifierApplier,
+            sqlAccu = moduleMeta.prototype.sqlGenerator().append(queryModifierApplier,
                     prefixGenerator, moduleMeta.prototype.queryModifiers(), sqlAccu, prefixStack);
             sqlAccu = moduleMeta.appendSqlRecursive(sqlAccu, prefixGenerator, queryModifierApplier, prefixStack);
             prefixStack.pop();

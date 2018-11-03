@@ -45,35 +45,35 @@ public class PoolModule extends Module<Pool, Class<?>, StructuredSql, Structured
 
     @NotNull
     @Override
-    public StructuredSqlGenerator getSqlGenerator() {
+    public StructuredSqlGenerator sqlGenerator() {
         return new StructuredSqlGenerator() {
             @NotNull
             @Override
-            public String getSelect() {
+            public String select() {
                 return "{{pool}}.id AS {{id}}, {{pool}}.name AS {{name}}";
             }
 
             @NotNull
             @Override
-            public String getFrom() {
+            public String from() {
                 return "";
             }
 
             @NotNull
             @Override
-            public String getJoins() {
+            public String joins() {
                 return "LEFT JOIN pool {{pool}} ON {{1, master}}.id = {{pool}}.master_id";
             }
 
             @NotNull
             @Override
-            public String getSortOrder() {
+            public String sortOrder() {
                 return "";
             }
 
             @NotNull
             @Override
-            public String getFilter() {
+            public String filter() {
                 return "";
             }
         };
