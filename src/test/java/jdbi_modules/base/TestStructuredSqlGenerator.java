@@ -119,7 +119,7 @@ class TestStructuredSqlGenerator {
 
         @NotNull
         @Override
-        public String getSortOrder() {
+        public String sortOrder() {
             return "{{" + this.sortOrder + "}}";
         }
     }
