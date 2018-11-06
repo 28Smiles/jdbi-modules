@@ -41,8 +41,10 @@ public class StructuredSql implements SqlType {
 
     @Override
     public final String toQuery() {
-        return (cte.isEmpty() ? "" : "WITH RECURSIVE " + cte + " ") + "SELECT " + select + " FROM " + from + " " + joins
-                + (filter.isEmpty() ? "" : " WHERE " + filter) + (sortOrder.isEmpty() ? "" : " ORDER BY " + sortOrder);
+        return (cte.isEmpty() ? "" : "WITH RECURSIVE " + cte + " ") + "SELECT " + select + " FROM " + from
+                + conditionalConcat(" ", joins)
+                + conditionalConcat(" WHERE ", filter)
+                + conditionalConcat(" ORDER BY ", sortOrder);
     }
 
     /**
@@ -63,5 +65,9 @@ public class StructuredSql implements SqlType {
         filter = filter.replace(inSql, inSql.replace(name, queryModifierName));
         sortOrder = sortOrder.replace(inSql, inSql.replace(name, queryModifierName));
         return query -> queryModifier.apply(query, queryModifierName);
+    }
+
+    private String conditionalConcat(final String prepend, final String str) {
+        return str.isEmpty() ? "" : (prepend + str);
     }
 }
