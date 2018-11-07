@@ -1,3 +1,5 @@
+ - Remove unnessesary space at the end of a query created with the StucturedQueryGenerator
+
 # v1.0.0
 
 - Allow Postgres JSON expression for prefix function
