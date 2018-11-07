@@ -196,7 +196,7 @@ public class ModuleMetaGenerator<Type, KeyType, SqlType extends jdbi_modules.Sql
             }
             final FallbackMeta<T> fallbackMeta = (FallbackMeta<T>) fallbacks.get(key);
             if (Objects.nonNull(fallbackMeta)) {
-                fallbackMeta.call(collection);
+                fallbackMeta.call(collection, enricher);
             }
             return this;
         }
@@ -214,7 +214,7 @@ public class ModuleMetaGenerator<Type, KeyType, SqlType extends jdbi_modules.Sql
             }
             final FallbackMeta<T> fallbackMeta = (FallbackMeta<T>) fallbacks.get(key);
             if (Objects.nonNull(fallbackMeta)) {
-                fallbackMeta.call(collection);
+                fallbackMeta.call(collection, enricher, accessed);
             }
             return this;
         }
