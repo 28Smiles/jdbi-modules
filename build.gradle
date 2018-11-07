@@ -4,7 +4,7 @@ apply from: "$rootDir/gradle/plugins/checkstyle.gradle"
 apply from: "$rootDir/gradle/plugins/maven.gradle"
 
 group 'com.github.28Smiles'
-version '1.0.0'
+version '1.0.1'
 description 'A Java library built on top of Jdbi for modularized SQL statements and Object mapping'
 
 sourceCompatibility = 10
