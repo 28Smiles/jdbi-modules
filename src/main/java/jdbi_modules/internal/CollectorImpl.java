@@ -27,6 +27,7 @@ class CollectorImpl<CollectionType extends Collection<Type>, Type> implements Co
     private CollectionType collection;
     private BiFunction<Type, Type, Boolean> comparator = Object::equals;
     private List<Type> added = new ArrayList<>();
+    private List<Type> accessed = new ArrayList<>();
 
     CollectorImpl(final CollectionType collection, final RowView rowView, final ResultSet resultSet, final StatementContext context) {
         this.collection = collection;
@@ -51,11 +52,13 @@ class CollectorImpl<CollectionType extends Collection<Type>, Type> implements Co
         if (Objects.isNull(type)) {
             return this;
         }
-        applier.accept(collection.stream().filter(b -> comparator.apply(b, type)).findFirst().orElseGet(() -> {
+        final Type found = collection.stream().filter(b -> comparator.apply(b, type)).findFirst().orElseGet(() -> {
             collection.add(type);
             added.add(type);
             return type;
-        }));
+        });
+        accessed.add(found);
+        applier.accept(found);
         return this;
     }
 
@@ -64,11 +67,11 @@ class CollectorImpl<CollectionType extends Collection<Type>, Type> implements Co
         if (Objects.isNull(type)) {
             return this;
         }
-        collection.stream().filter(b -> comparator.apply(b, type)).findFirst().orElseGet(() -> {
+        accessed.add(collection.stream().filter(b -> comparator.apply(b, type)).findFirst().orElseGet(() -> {
             collection.add(type);
             added.add(type);
             return type;
-        });
+        }));
         return this;
     }
 
@@ -80,6 +83,7 @@ class CollectorImpl<CollectionType extends Collection<Type>, Type> implements Co
         collection.add(type);
         applyer.accept(type);
         added.add(type);
+        accessed.add(type);
         return this;
     }
 
@@ -90,6 +94,7 @@ class CollectorImpl<CollectionType extends Collection<Type>, Type> implements Co
         }
         collection.add(type);
         added.add(type);
+        accessed.add(type);
         return this;
     }
 
@@ -144,9 +149,14 @@ class CollectorImpl<CollectionType extends Collection<Type>, Type> implements Co
     void useCollection(final CollectionType collection) {
         this.collection = collection;
         this.added.clear();
+        this.accessed.clear();
     }
 
     void applyOnAdded(@NotNull final Consumer<Type> consumer) {
         added.forEach(consumer);
+    }
+
+    void applyOnAccessed(@NotNull final Consumer<Type> consumer) {
+        accessed.forEach(consumer);
     }
 }

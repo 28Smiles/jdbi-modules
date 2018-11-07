@@ -187,11 +187,29 @@ public class ModuleMetaGenerator<Type, KeyType, SqlType extends jdbi_modules.Sql
         @Override
         @SuppressWarnings("unchecked")
         public <T, CollectionType extends Collection<T>> ModuleMeta<KeyType> callSubmodule(final @NotNull KeyType key,
-                                                                            final @NotNull CollectionType collection,
-                                                                            final @NotNull Consumer<T> enricher) {
+                                                                                           final @NotNull CollectionType collection,
+                                                                                           final @NotNull Consumer<T> enricher) {
             final ModuleMetaImpl<T, KeyType, SqlType, SqlGenerator<SqlType>> module = (ModuleMetaImpl<T, KeyType, SqlType, SqlGenerator<SqlType>>) submodules.get(key);
             if (Objects.nonNull(module)) {
                 module.call(collection, enricher);
+                return this;
+            }
+            final FallbackMeta<T> fallbackMeta = (FallbackMeta<T>) fallbacks.get(key);
+            if (Objects.nonNull(fallbackMeta)) {
+                fallbackMeta.call(collection);
+            }
+            return this;
+        }
+
+        @Override
+        @SuppressWarnings("unchecked")
+        public <T, CollectionType extends Collection<T>> ModuleMeta<KeyType> callSubmodule(final @NotNull KeyType key,
+                                                                                           final @NotNull CollectionType collection,
+                                                                                           final @NotNull Consumer<T> enricher,
+                                                                                           final @NotNull Consumer<T> accessed) {
+            final ModuleMetaImpl<T, KeyType, SqlType, SqlGenerator<SqlType>> module = (ModuleMetaImpl<T, KeyType, SqlType, SqlGenerator<SqlType>>) submodules.get(key);
+            if (Objects.nonNull(module)) {
+                module.call(collection, enricher, accessed);
                 return this;
             }
             final FallbackMeta<T> fallbackMeta = (FallbackMeta<T>) fallbacks.get(key);
@@ -235,12 +253,17 @@ public class ModuleMetaGenerator<Type, KeyType, SqlType extends jdbi_modules.Sql
 
         public <CollectionType extends Collection<Type>> void call(final @NotNull CollectionType collection,
                                                                    final @NotNull Consumer<Type> enricher) {
-            if (Objects.isNull(collector)) {
-                collector = new CollectorImpl<>(collection, rowView, resultSet, statementContext);
-            }
-            collector.useCollection(collection);
-            prototype.map(collector, this, rowView, store);
+            this.call(collection);
+            assert collector != null;
             collector.applyOnAdded(enricher);
+        }
+
+        public <CollectionType extends Collection<Type>> void call(final @NotNull CollectionType collection,
+                                                                   final @NotNull Consumer<Type> enricher,
+                                                                   final @NotNull Consumer<Type> accessed) {
+            this.call(collection, enricher);
+            assert collector != null;
+            collector.applyOnAccessed(accessed);
         }
     }
 }

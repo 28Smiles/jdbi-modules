@@ -43,6 +43,17 @@ public interface ModuleMeta<KeyType> {
     <T, CollectionType extends Collection<T>> ModuleMeta<KeyType> callSubmodule(@NotNull KeyType key, @NotNull CollectionType collection, Consumer<T> enricher);
 
     /**
+     * @param key              the key
+     * @param collection       the collection
+     * @param enricher         the consumer to apply after adding something to the collection
+     * @param accessed         the consumer to apply on the accessed elements
+     * @param <T>              the type of the elements of the collection
+     * @param <CollectionType> the type of the collection
+     * @return this
+     */
+    <T, CollectionType extends Collection<T>> ModuleMeta<KeyType> callSubmodule(@NotNull KeyType key, @NotNull CollectionType collection, Consumer<T> enricher, Consumer<T> accessed);
+
+    /**
      * @param key  the key
      * @param type the class of the type expected
      * @param <T>  the type expected
