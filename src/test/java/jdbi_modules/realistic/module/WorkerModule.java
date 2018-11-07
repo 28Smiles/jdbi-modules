@@ -11,6 +11,7 @@ import jdbi_modules.bean.User;
 import jdbi_modules.internal.RowView;
 import jdbi_modules.bean.Worker;
 import org.assertj.core.api.Assertions;
+import org.jdbi.v3.core.generic.GenericType;
 import org.jdbi.v3.core.mapper.RowMapper;
 import org.jdbi.v3.core.mapper.reflect.FieldMapper;
 import org.jetbrains.annotations.NotNull;
@@ -117,12 +118,16 @@ public class WorkerModule extends Module<Worker, Class<?>, StructuredSql, Struct
                 usersAdded.clear();
 
                 moduleMeta.callSubmodule(User.class, users);
-                Assertions.assertThat(usersAccessed).containsExactly();
-                Assertions.assertThat(usersAdded).containsExactly();
-                usersAccessed.clear();
+                Assertions.assertThat(users).containsExactly(worker.getUser());
+
+                moduleMeta.callSubmodule(User.class, User.class, usersAdded::add);
+                Assertions.assertThat(usersAdded).containsExactlyInAnyOrderElementsOf(users);
                 usersAdded.clear();
 
-                Assertions.assertThat(users).containsExactly(worker.getUser());
+                moduleMeta.callSubmodule(User.class, new GenericType<User>() {
+                }, usersAdded::add);
+                Assertions.assertThat(usersAdded).containsExactlyInAnyOrderElementsOf(users);
+                usersAdded.clear();
             });
         }
     }
