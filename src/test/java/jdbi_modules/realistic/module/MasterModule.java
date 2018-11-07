@@ -10,6 +10,7 @@ import jdbi_modules.base.StructuredSqlGenerator;
 import jdbi_modules.internal.RowView;
 import jdbi_modules.bean.Master;
 import jdbi_modules.bean.Pool;
+import org.assertj.core.api.Assertions;
 import org.jdbi.v3.core.mapper.RowMapper;
 import org.jdbi.v3.core.mapper.reflect.FieldMapper;
 import org.jetbrains.annotations.NotNull;
@@ -43,6 +44,8 @@ public class MasterModule extends Module<Master, Class<?>, StructuredSql, Struct
                     @NotNull final ModuleMeta<Class<?>> moduleMeta,
                     @NotNull final RowView rowView,
                     @NotNull final Store store) {
+        Assertions.assertThat(moduleMeta.getModulePrefix()).isEqualTo("mod0");
+        Assertions.assertThat(moduleMeta.getStore()).isSameAs(store);
         if (rowView.getColumn("id", Long.class) != null) {
             collector.appendUniqueWithRowView(Master.class, master -> {
                 moduleMeta.callSubmodule(Pool.class, master.getPools(), pool -> {

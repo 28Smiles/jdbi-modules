@@ -10,12 +10,15 @@ import jdbi_modules.base.StructuredSqlGenerator;
 import jdbi_modules.bean.User;
 import jdbi_modules.internal.RowView;
 import jdbi_modules.bean.Worker;
+import org.assertj.core.api.Assertions;
 import org.jdbi.v3.core.mapper.RowMapper;
 import org.jdbi.v3.core.mapper.reflect.FieldMapper;
 import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.function.Function;
@@ -25,7 +28,7 @@ import java.util.function.Function;
  */
 public class WorkerModule extends Module<Worker, Class<?>, StructuredSql, StructuredSqlGenerator> {
     public WorkerModule() {
-        fallbacks().put(User.class, (collector, rowView, store) -> collector.append(new User(rowView.getColumn("user_id", Long.class), null)));
+        fallbacks().put(User.class, (collector, rowView, store) -> collector.appendUnique(new User(rowView.getColumn("user_id", Long.class), null)));
     }
 
     public WorkerModule addModule(final Module<User, ?, StructuredSql, StructuredSqlGenerator> userModule) {
@@ -91,6 +94,35 @@ public class WorkerModule extends Module<Worker, Class<?>, StructuredSql, Struct
         if (rowView.getColumn("id", Long.class) != null) {
             collector.appendUniqueWithRowView(Worker.class, worker -> {
                 worker.setUser(moduleMeta.callSubmodule(User.class, User.class));
+
+                final List<User> users = new ArrayList<>();
+                final List<User> usersAccessed = new ArrayList<>();
+                final List<User> usersAdded = new ArrayList<>();
+                moduleMeta.callSubmodule(User.class, users, usersAdded::add, usersAccessed::add);
+                Assertions.assertThat(usersAccessed).containsExactlyInAnyOrderElementsOf(users);
+                Assertions.assertThat(usersAdded).containsExactlyInAnyOrderElementsOf(users);
+                usersAccessed.clear();
+                usersAdded.clear();
+
+                moduleMeta.callSubmodule(User.class, users, usersAdded::add, usersAccessed::add);
+                Assertions.assertThat(usersAccessed).containsExactlyInAnyOrderElementsOf(users);
+                Assertions.assertThat(usersAdded).containsExactly();
+                usersAccessed.clear();
+                usersAdded.clear();
+
+                moduleMeta.callSubmodule(User.class, users, usersAdded::add);
+                Assertions.assertThat(usersAccessed).containsExactly();
+                Assertions.assertThat(usersAdded).containsExactly();
+                usersAccessed.clear();
+                usersAdded.clear();
+
+                moduleMeta.callSubmodule(User.class, users);
+                Assertions.assertThat(usersAccessed).containsExactly();
+                Assertions.assertThat(usersAdded).containsExactly();
+                usersAccessed.clear();
+                usersAdded.clear();
+
+                Assertions.assertThat(users).containsExactly(worker.getUser());
             });
         }
     }
