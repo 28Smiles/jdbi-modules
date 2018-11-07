@@ -16,6 +16,15 @@ public final class PrefixGenerator implements Iterator<String> {
         this.prefix = prefix;
     }
 
+    /**
+     * @param prefix the prefix of the generator
+     * @param start the value to start from
+     */
+    PrefixGenerator(final String prefix, final int start) {
+        this.prefix = prefix;
+        this.i = start;
+    }
+
     @Override
     public boolean hasNext() {
         return i < Integer.MAX_VALUE;

@@ -10,9 +10,15 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class TestPrefixGenerator {
 
     @Test
-    void test() {
+    void testPrefix() {
         PrefixGenerator prefixGenerator = new PrefixGenerator("");
         assertThat(prefixGenerator.hasNext()).isTrue();
         assertThat(prefixGenerator.next()).isEqualTo("0");
+    }
+
+    @Test
+    void testLimit() {
+        PrefixGenerator prefixGenerator = new PrefixGenerator("", Integer.MAX_VALUE);
+        assertThat(prefixGenerator.hasNext()).isFalse();
     }
 }
