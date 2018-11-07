@@ -46,15 +46,13 @@ class FallbackMeta<Type> {
     public <CollectionType extends Collection<Type>> void call(final @NotNull CollectionType collection,
                                                                final @NotNull Consumer<Type> enricher) {
         this.call(collection);
-        assert collector != null;
-        collector.applyOnAdded(enricher);
+        Objects.requireNonNull(collector).applyOnAdded(enricher);
     }
 
     public <CollectionType extends Collection<Type>> void call(final @NotNull CollectionType collection,
                                                                final @NotNull Consumer<Type> enricher,
                                                                final @NotNull Consumer<Type> accessed) {
         this.call(collection, enricher);
-        assert collector != null;
-        collector.applyOnAccessed(accessed);
+        Objects.requireNonNull(collector).applyOnAccessed(accessed);
     }
 }
