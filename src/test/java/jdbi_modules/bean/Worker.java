@@ -3,7 +3,7 @@ package jdbi_modules.bean;
 /**
  * @since 14.04.2018
  */
-public final class Worker extends Bean {
+public class Worker extends Bean {
     private Pool pool;
     private int position;
     private User user;

@@ -1,5 +1,7 @@
 package jdbi_modules.internal;
 
+import jdbi_modules.bean.Pool;
+import jdbi_modules.bean.User;
 import jdbi_modules.bean.Worker;
 import org.jdbi.v3.core.mapper.RowMapper;
 import org.jdbi.v3.core.statement.StatementContext;
@@ -144,6 +146,40 @@ class TestCollectorImpl {
         assertThat(collectorMock.collector.get()).containsExactly(worker1, worker3);
     }
 
+    @Test
+    void testStream() {
+        final CollectorMock collectorMock = new CollectorMock();
+        workers.forEach(collectorMock.collector::appendUnique);
+        collectorMock.collector.appendUnique(null);
+        assertThat(collectorMock.collector.stream()).containsExactly(worker1, worker3);
+    }
+
+    @Test
+    void testStreamFilter() {
+        final CollectorMock collectorMock = new CollectorMock();
+        workers.forEach(collectorMock.collector::appendUnique);
+        final WorkerChild1 workerChild1 = new WorkerChild1(1245, null, null, 0, null);
+        collectorMock.collector.appendUnique(workerChild1);
+        final WorkerChild2 workerChild2 = new WorkerChild2(4545, null, null, 0, null);
+        collectorMock.collector.appendUnique(workerChild2);
+        assertThat(collectorMock.collector.stream(Worker.class)).containsExactlyInAnyOrder(worker1, worker3, workerChild1, workerChild2);
+        assertThat(collectorMock.collector.stream(WorkerChild1.class)).containsExactlyInAnyOrder(workerChild1);
+        assertThat(collectorMock.collector.get(WorkerChild2.class)).containsExactlyInAnyOrder(workerChild2);
+    }
+
+    @Test
+    void testListFilter() {
+        final CollectorMock collectorMock = new CollectorMock();
+        workers.forEach(collectorMock.collector::appendUnique);
+        final WorkerChild1 workerChild1 = new WorkerChild1(1245, null, null, 0, null);
+        collectorMock.collector.appendUnique(workerChild1);
+        final WorkerChild2 workerChild2 = new WorkerChild2(4545, null, null, 0, null);
+        collectorMock.collector.appendUnique(workerChild2);
+        assertThat(collectorMock.collector.get(Worker.class)).containsExactlyInAnyOrder(worker1, worker3, workerChild1, workerChild2);
+        assertThat(collectorMock.collector.get(WorkerChild1.class)).containsExactlyInAnyOrder(workerChild1);
+        assertThat(collectorMock.collector.get(WorkerChild2.class)).containsExactlyInAnyOrder(workerChild2);
+    }
+
     private class RowMapperMock implements RowMapper<Worker> {
         private final Worker worker;
 
@@ -154,6 +190,26 @@ class TestCollectorImpl {
         @Override
         public Worker map(ResultSet rs, StatementContext ctx) throws SQLException {
             return worker;
+        }
+    }
+
+    private static class WorkerChild1 extends Worker {
+        public WorkerChild1(long id, String name, User user, int position, Pool pool) {
+            super(id, name, user, position, pool);
+        }
+
+        public WorkerChild1() {
+            super();
+        }
+    }
+
+    private static class WorkerChild2 extends Worker {
+        public WorkerChild2(long id, String name, User user, int position, Pool pool) {
+            super(id, name, user, position, pool);
+        }
+
+        public WorkerChild2() {
+            super();
         }
     }
 
