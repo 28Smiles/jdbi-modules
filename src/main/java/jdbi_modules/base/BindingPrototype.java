@@ -18,7 +18,16 @@ public abstract class BindingPrototype extends QueryModifier<Object> {
     }
 
     @Override
-    public final boolean equals(final QueryModifier<?> obj) {
-        return obj instanceof Binding;
+    public final int hashCode() {
+        return getName().hashCode();
+    }
+
+    @Override
+    public final boolean equals(final Object obj) {
+        if (obj instanceof BindingPrototype) {
+            final QueryModifier<?> queryModifier = (QueryModifier) obj;
+            return queryModifier.getName().equals(getName());
+        }
+        return false;
     }
 }

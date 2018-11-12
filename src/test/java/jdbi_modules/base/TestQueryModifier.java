@@ -81,4 +81,23 @@ public class TestQueryModifier {
             assertThat(definition.getValue()).isSameAs(number);
         });
     }
+
+    @Test
+    void testEquals() {
+        final Definition definition1 = new Definition("name", 1);
+        final Definition definition2 = new Definition("name", 2);
+        final Definition definition3 = new Definition("id", 1);
+        final Binding binding1 = new Binding("name", 1);
+        final Binding binding2 = new Binding("name", 2);
+        final Binding binding3 = new Binding("id", 1);
+
+        assertThat(definition1.equals(definition2)).isTrue();
+        assertThat(definition1.equals(definition3)).isFalse();
+        assertThat(definition1.equals(binding1)).isFalse();
+        assertThat(definition1.equals(binding3)).isFalse();
+        assertThat(binding1.equals(binding2)).isTrue();
+        assertThat(binding1.equals(binding3)).isFalse();
+        assertThat(definition1.hashCode() == definition3.hashCode()).isFalse();
+        assertThat(binding1.hashCode() == binding3.hashCode()).isFalse();
+    }
 }

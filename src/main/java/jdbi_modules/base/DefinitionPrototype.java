@@ -19,7 +19,16 @@ public abstract class DefinitionPrototype<Type> extends QueryModifier<Type> {
     }
 
     @Override
-    public final boolean equals(final QueryModifier<?> obj) {
-        return obj instanceof Definition;
+    public final int hashCode() {
+        return getName().hashCode();
+    }
+
+    @Override
+    public final boolean equals(final Object obj) {
+        if (obj instanceof DefinitionPrototype) {
+            final QueryModifier<?> queryModifier = (QueryModifier) obj;
+            return queryModifier.getName().equals(getName());
+        }
+        return false;
     }
 }
