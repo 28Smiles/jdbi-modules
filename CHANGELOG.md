@@ -1,4 +1,5 @@
- - Add spaces after comma of concatination in StructuredSqlGenerator
+- Add equals and hashcode to query modifiers
+- Add spaces after comma of concatination in StructuredSqlGenerator
 
 # v1.0.1
 
