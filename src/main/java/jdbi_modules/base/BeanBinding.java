@@ -5,18 +5,13 @@ import org.jdbi.v3.core.statement.Query;
 /**
  * @since 14.04.2018
  */
-public final class BeanBinding extends QueryModifier<Object> {
+public final class BeanBinding extends BindingPrototype {
     /**
      * @param name  the name of the binding
      * @param value the value of the binding
      */
     public BeanBinding(final String name, final Object value) {
         super(name, value);
-    }
-
-    @Override
-    public String getInSql() {
-        return ':' + getName();
     }
 
     @Override

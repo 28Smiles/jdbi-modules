@@ -7,18 +7,13 @@ import java.util.List;
 /**
  * @since 14.04.2018
  */
-public final class ListDefinition extends QueryModifier<List<?>> {
+public final class ListDefinition extends DefinitionPrototype<List<?>> {
     /**
      * @param name  the name of the binding
      * @param value the value of the binding
      */
     public ListDefinition(final String name, final List<?> value) {
         super(name, value);
-    }
-
-    @Override
-    public String getInSql() {
-        return '<' + getName() + '>';
     }
 
     @Override
