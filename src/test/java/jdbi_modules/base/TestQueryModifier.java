@@ -95,6 +95,8 @@ public class TestQueryModifier {
         assertThat(definition1.equals(definition3)).isFalse();
         assertThat(definition1.equals(binding1)).isFalse();
         assertThat(definition1.equals(binding3)).isFalse();
+        assertThat(binding1.equals(definition1)).isFalse();
+        assertThat(binding3.equals(definition3)).isFalse();
         assertThat(binding1.equals(binding2)).isTrue();
         assertThat(binding1.equals(binding3)).isFalse();
         assertThat(definition1.hashCode() == definition3.hashCode()).isFalse();
