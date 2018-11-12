@@ -102,12 +102,12 @@ public interface StructuredSqlGenerator extends jdbi_modules.SqlGenerator<Struct
                                  @NotNull final Set<QueryModifier> queryModifiers,
                                  @NotNull final StructuredSql sqlType,
                                  @NotNull final Stack<String> modulePrefix) {
-        sqlType.cte += (!sqlType.cte.isEmpty() && !cte().isEmpty() ? ',' : "") + route(modulePrefix, cte());
+        sqlType.cte += (!sqlType.cte.isEmpty() && !cte().isEmpty() ? ", " : "") + route(modulePrefix, cte());
         sqlType.select += (!sqlType.select.isEmpty() && !select().isEmpty() ? ',' : "") + route(modulePrefix, select());
         sqlType.from += (!sqlType.from.isEmpty() && !from().isEmpty() ? ' ' : "") + route(modulePrefix, from());
         sqlType.joins += (!sqlType.joins.isEmpty() && !joins().isEmpty() ? ' ' : "") + route(modulePrefix, joins());
         sqlType.filter += (!sqlType.filter.isEmpty() && !filter().isEmpty() ? " AND " : "") + route(modulePrefix, filter());
-        sqlType.sortOrder += (!sqlType.sortOrder.isEmpty() && !sortOrder().isEmpty() ? ',' : "") + route(modulePrefix, sortOrder());
+        sqlType.sortOrder += (!sqlType.sortOrder.isEmpty() && !sortOrder().isEmpty() ? ", " : "") + route(modulePrefix, sortOrder());
         queryModifiers.stream().map(qm -> sqlType.applyQueryModifier(qm, queryModifierNameGenerator)).forEach(queryModifierApplier::add);
         return sqlType;
     }
