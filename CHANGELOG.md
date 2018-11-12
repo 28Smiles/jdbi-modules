@@ -1,3 +1,5 @@
+ - Add spaces after comma of concatination in StructuredSqlGenerator
+
 # v1.0.1
 
 - ModuleMeta's callSubmodule can now apply a function on the accessed elements
