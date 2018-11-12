@@ -1,4 +1,10 @@
- - Remove unnessesary space at the end of a query created with the StucturedQueryGenerator
+ - Add spaces after comma of concatination in StructuredSqlGenerator
+
+# v1.0.1
+
+- ModuleMeta's callSubmodule can now apply a function on the accessed elements
+- Remove unnessesary space at the end of a query created with the StucturedQueryGenerator
+- Fix an issue where the function to apply on the added and accessed elements where not applied if the fallsback was used to map
 
 # v1.0.0
 
