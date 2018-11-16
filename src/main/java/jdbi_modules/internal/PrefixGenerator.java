@@ -1,5 +1,6 @@
 package jdbi_modules.internal;
 
+import javax.validation.constraints.NotNull;
 import java.util.Iterator;
 
 /**
@@ -12,7 +13,7 @@ public final class PrefixGenerator implements Iterator<String> {
     /**
      * @param prefix the prefix of the generator
      */
-    public PrefixGenerator(final String prefix) {
+    public PrefixGenerator(@NotNull final String prefix) {
         this.prefix = prefix;
     }
 
@@ -20,7 +21,7 @@ public final class PrefixGenerator implements Iterator<String> {
      * @param prefix the prefix of the generator
      * @param start the value to start from
      */
-    PrefixGenerator(final String prefix, final int start) {
+    PrefixGenerator(@NotNull final String prefix, final int start) {
         this.prefix = prefix;
         this.i = start;
     }
@@ -30,6 +31,7 @@ public final class PrefixGenerator implements Iterator<String> {
         return i < Integer.MAX_VALUE;
     }
 
+    @NotNull
     @Override
     public String next() {
         return prefix + i++;

@@ -3,8 +3,8 @@ package jdbi_modules.base;
 import jdbi_modules.QueryModifier;
 import jdbi_modules.SqlType;
 import org.jdbi.v3.core.statement.Query;
-import org.jetbrains.annotations.NotNull;
 
+import javax.validation.constraints.NotNull;
 import java.util.Iterator;
 import java.util.function.Consumer;
 
@@ -30,7 +30,12 @@ public class StructuredSql implements SqlType {
     @SuppressWarnings("VisibilityModifier")
     String sortOrder;
 
-    StructuredSql(final String cte, final String select, final String from, final String joins, final String filter, final String sortOrder) {
+    StructuredSql(@NotNull final String cte,
+                  @NotNull final String select,
+                  @NotNull final String from,
+                  @NotNull final String joins,
+                  @NotNull final String filter,
+                  @NotNull final String sortOrder) {
         this.cte = cte;
         this.select = select;
         this.from = from;
@@ -39,6 +44,7 @@ public class StructuredSql implements SqlType {
         this.sortOrder = sortOrder;
     }
 
+    @NotNull
     @Override
     public final String toQuery() {
         return (cte.isEmpty() ? "" : "WITH RECURSIVE " + cte + " ") + "SELECT " + select + " FROM " + from
@@ -54,7 +60,8 @@ public class StructuredSql implements SqlType {
      * @param queryModifierNameGenerator a generator to generate a generic name for the query modifier
      * @return a consumer of a query to apply the query modifier to the query later
      */
-    public Consumer<Query> applyQueryModifier(@NotNull final QueryModifier queryModifier, @NotNull final Iterator<String> queryModifierNameGenerator) {
+    public Consumer<Query> applyQueryModifier(@NotNull final QueryModifier queryModifier,
+                                              @NotNull final Iterator<String> queryModifierNameGenerator) {
         final String queryModifierName = queryModifierNameGenerator.next();
         final String inSql = queryModifier.getInSql();
         final String name = queryModifier.getName();
@@ -67,7 +74,8 @@ public class StructuredSql implements SqlType {
         return query -> queryModifier.apply(query, queryModifierName);
     }
 
-    private String conditionalConcat(final String prepend, final String str) {
+    @NotNull
+    private String conditionalConcat(final @NotNull String prepend, final @NotNull String str) {
         return str.isEmpty() ? "" : (prepend + str);
     }
 }

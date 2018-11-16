@@ -1,5 +1,6 @@
 package jdbi_modules;
 
+import javax.validation.constraints.NotNull;
 import java.util.Map;
 
 /**
@@ -10,7 +11,7 @@ public interface Store {
      * @param storeMap the map to create the store of
      * @return the created store
      */
-    static Store of(final Map<Class<?>, Object> storeMap) {
+    static Store of(final @NotNull Map<Class<?>, Object> storeMap) {
         return new Store() {
             @Override
             @SuppressWarnings("unchecked")

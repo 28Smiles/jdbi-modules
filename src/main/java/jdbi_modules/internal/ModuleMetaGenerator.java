@@ -9,9 +9,9 @@ import org.jdbi.v3.core.generic.GenericType;
 import org.jdbi.v3.core.mapper.ColumnMapper;
 import org.jdbi.v3.core.statement.Query;
 import org.jdbi.v3.core.statement.StatementContext;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Null;
 import java.sql.ResultSet;
 import java.util.Collection;
 import java.util.HashMap;
@@ -46,10 +46,10 @@ public class ModuleMetaGenerator<Type, KeyType, SqlType extends jdbi_modules.Sql
      * @param commonColumnMapperMap the common shared column mapper map
      */
     @SuppressWarnings("unchecked")
-    public ModuleMetaGenerator(final Iterator<String> prefixGenerator,
-                               final Module<Type, KeyType, SqlType, Generator> prototype,
-                               final Map<Class<?>, Object> store,
-                               final Map<java.lang.reflect.Type, ColumnMapper<?>> commonColumnMapperMap) {
+    public ModuleMetaGenerator(@NotNull final Iterator<String> prefixGenerator,
+                               @NotNull final Module<Type, KeyType, SqlType, Generator> prototype,
+                               @NotNull final Map<Class<?>, Object> store,
+                               @NotNull final Map<java.lang.reflect.Type, ColumnMapper<?>> commonColumnMapperMap) {
         this.modulePrefix = prefixGenerator.next();
         this.prototype = prototype;
         this.baseStore = store;
@@ -58,7 +58,8 @@ public class ModuleMetaGenerator<Type, KeyType, SqlType extends jdbi_modules.Sql
                 .collect(Collectors.toMap(Map.Entry::getKey, e -> new ModuleMetaGenerator<>(prefixGenerator, e.getValue(), store, commonColumnMapperMap)));
     }
 
-    private SqlType genSql(final Set<Consumer<Query>> queryModifierApplyer) {
+    @NotNull
+    private SqlType genSql(@NotNull final Set<Consumer<Query>> queryModifierApplyer) {
         final Iterator<String> prefixGenerator = new PrefixGenerator("m");
         final Stack<String> prefixStack = new Stack<>();
         prefixStack.push(this.modulePrefix);
@@ -67,7 +68,9 @@ public class ModuleMetaGenerator<Type, KeyType, SqlType extends jdbi_modules.Sql
         return sql;
     }
 
-    private SqlType appendSqlRecursive(final SqlType sql, final Iterator<String> prefixGenerator, final Set<Consumer<Query>> queryModifierApplier, final Stack<String> prefixStack) {
+    @NotNull
+    private SqlType appendSqlRecursive(@NotNull final SqlType sql, @NotNull final Iterator<String> prefixGenerator,
+                                       @NotNull final Set<Consumer<Query>> queryModifierApplier, final Stack<String> prefixStack) {
         SqlType sqlAccu = sql;
         for (final ModuleMetaGenerator<Object, Object, SqlType, SqlGenerator<SqlType>> moduleMeta : submodules.values()) {
             prefixStack.push(moduleMeta.modulePrefix);
@@ -79,7 +82,9 @@ public class ModuleMetaGenerator<Type, KeyType, SqlType extends jdbi_modules.Sql
         return sqlAccu;
     }
 
-    private ModuleMetaImpl<Type, KeyType, SqlType, Generator> initialize(final @NotNull ResultSet resultSet, final @NotNull StatementContext statementContext) {
+    @NotNull
+    private ModuleMetaImpl<Type, KeyType, SqlType, Generator> initialize(@NotNull final ResultSet resultSet,
+                                                                         @NotNull final StatementContext statementContext) {
         final Store store = Store.of(new HashMap<>(baseStore));
         store.place(ResultSet.class, resultSet);
         store.place(StatementContext.class, statementContext);
@@ -91,7 +96,8 @@ public class ModuleMetaGenerator<Type, KeyType, SqlType extends jdbi_modules.Sql
                 submodules.entrySet().stream().collect(Collectors.toMap(Map.Entry::getKey, e -> e.getValue().initialize(resultSet, statementContext))));
     }
 
-    private Query createQuery(final Handle handle) {
+    @NotNull
+    private Query createQuery(@NotNull final Handle handle) {
         final Set<Consumer<Query>> queryModifierApplyer = new HashSet<>();
         final Query query = handle.select(genSql(queryModifierApplyer).toQuery());
         queryModifierApplyer.forEach(qm -> qm.accept(query));
@@ -106,7 +112,8 @@ public class ModuleMetaGenerator<Type, KeyType, SqlType extends jdbi_modules.Sql
      * @param <C>    the seed type
      * @return the seed, filled with the mapped values
      */
-    public <C extends Collection<Type>> C run(final Handle handle, final C seed) {
+    @NotNull
+    public <C extends Collection<Type>> C run(@NotNull final Handle handle, @NotNull final C seed) {
         return createQuery(handle).scanResultSet(((resultSetSupplier, ctx) -> {
             final ResultSet resultSet = resultSetSupplier.get();
             final ModuleMetaImpl<Type, KeyType, SqlType, Generator> initialize = initialize(resultSet, ctx);
@@ -135,17 +142,17 @@ public class ModuleMetaGenerator<Type, KeyType, SqlType extends jdbi_modules.Sql
         private final Map<KeyType, ModuleMetaImpl<Object, Object, SqlType, SqlGenerator<SqlType>>> submodules;
         private final Module<Type, KeyType, SqlType, Generator> prototype;
 
-        @Nullable
+        @Null
         private CollectorImpl<Collection<Type>, Type> collector = null;
 
-        private ModuleMetaImpl(final Module<Type, KeyType, SqlType, Generator> prototype,
-                               final String prefix,
-                               final ResultSet resultSet,
-                               final StatementContext statementContext,
-                               final RowView rowView,
-                               final Store store,
-                               final Map<KeyType, FallbackMeta<Object>> fallbacks,
-                               final Map<KeyType, ModuleMetaImpl<Object, Object, SqlType, SqlGenerator<SqlType>>> submodules) {
+        private ModuleMetaImpl(@NotNull final Module<Type, KeyType, SqlType, Generator> prototype,
+                               @NotNull final String prefix,
+                               @NotNull final ResultSet resultSet,
+                               @NotNull final StatementContext statementContext,
+                               @NotNull final RowView rowView,
+                               @NotNull final Store store,
+                               @NotNull final Map<KeyType, FallbackMeta<Object>> fallbacks,
+                               @NotNull final Map<KeyType, ModuleMetaImpl<Object, Object, SqlType, SqlGenerator<SqlType>>> submodules) {
             this.prototype = prototype;
             this.prefix = prefix;
             this.resultSet = resultSet;
@@ -171,7 +178,8 @@ public class ModuleMetaGenerator<Type, KeyType, SqlType extends jdbi_modules.Sql
 
         @Override
         @SuppressWarnings("unchecked")
-        public <T, CollectionType extends Collection<T>> ModuleMeta<KeyType> callSubmodule(final @NotNull KeyType key, final @NotNull CollectionType collection) {
+        public <T, CollectionType extends Collection<T>> ModuleMeta<KeyType> callSubmodule(@NotNull final KeyType key,
+                                                                                           @NotNull final CollectionType collection) {
             final ModuleMetaImpl<T, KeyType, SqlType, SqlGenerator<SqlType>> module = (ModuleMetaImpl<T, KeyType, SqlType, SqlGenerator<SqlType>>) submodules.get(key);
             if (Objects.nonNull(module)) {
                 module.call(collection);
@@ -186,9 +194,9 @@ public class ModuleMetaGenerator<Type, KeyType, SqlType extends jdbi_modules.Sql
 
         @Override
         @SuppressWarnings("unchecked")
-        public <T, CollectionType extends Collection<T>> ModuleMeta<KeyType> callSubmodule(final @NotNull KeyType key,
-                                                                                           final @NotNull CollectionType collection,
-                                                                                           final @NotNull Consumer<T> enricher) {
+        public <T, CollectionType extends Collection<T>> ModuleMeta<KeyType> callSubmodule(@NotNull final KeyType key,
+                                                                                           @NotNull final CollectionType collection,
+                                                                                           @NotNull final Consumer<T> enricher) {
             final ModuleMetaImpl<T, KeyType, SqlType, SqlGenerator<SqlType>> module = (ModuleMetaImpl<T, KeyType, SqlType, SqlGenerator<SqlType>>) submodules.get(key);
             if (Objects.nonNull(module)) {
                 module.call(collection, enricher);
@@ -203,10 +211,10 @@ public class ModuleMetaGenerator<Type, KeyType, SqlType extends jdbi_modules.Sql
 
         @Override
         @SuppressWarnings("unchecked")
-        public <T, CollectionType extends Collection<T>> ModuleMeta<KeyType> callSubmodule(final @NotNull KeyType key,
-                                                                                           final @NotNull CollectionType collection,
-                                                                                           final @NotNull Consumer<T> enricher,
-                                                                                           final @NotNull Consumer<T> accessed) {
+        public <T, CollectionType extends Collection<T>> ModuleMeta<KeyType> callSubmodule(@NotNull final KeyType key,
+                                                                                           @NotNull final CollectionType collection,
+                                                                                           @NotNull final Consumer<T> enricher,
+                                                                                           @NotNull final Consumer<T> accessed) {
             final ModuleMetaImpl<T, KeyType, SqlType, SqlGenerator<SqlType>> module = (ModuleMetaImpl<T, KeyType, SqlType, SqlGenerator<SqlType>>) submodules.get(key);
             if (Objects.nonNull(module)) {
                 module.call(collection, enricher, accessed);
@@ -221,7 +229,7 @@ public class ModuleMetaGenerator<Type, KeyType, SqlType extends jdbi_modules.Sql
 
         @Override
         @SuppressWarnings("unchecked")
-        public <T> T callSubmodule(final @NotNull KeyType key, final @NotNull Class<T> type) {
+        public <T> T callSubmodule(@NotNull final KeyType key, @NotNull final Class<T> type) {
             final ModuleMetaImpl<T, KeyType, SqlType, SqlGenerator<SqlType>> module = (ModuleMetaImpl<T, KeyType, SqlType, SqlGenerator<SqlType>>) submodules.get(key);
             if (Objects.nonNull(module)) {
                 LinkedList<T> list = new LinkedList<>();
@@ -239,11 +247,11 @@ public class ModuleMetaGenerator<Type, KeyType, SqlType extends jdbi_modules.Sql
 
         @Override
         @SuppressWarnings("unchecked")
-        public <T> T callSubmodule(final @NotNull KeyType key, final @NotNull GenericType<T> type) {
+        public <T> T callSubmodule(final @NotNull KeyType key, final GenericType<T> type) {
             return (T) callSubmodule(key, Object.class);
         }
 
-        public <CollectionType extends Collection<Type>> void call(final @NotNull CollectionType collection) {
+        public <CollectionType extends Collection<Type>> void call(@NotNull final CollectionType collection) {
             if (Objects.isNull(collector)) {
                 collector = new CollectorImpl<>(collection, rowView, resultSet, statementContext);
             }
@@ -251,15 +259,15 @@ public class ModuleMetaGenerator<Type, KeyType, SqlType extends jdbi_modules.Sql
             prototype.map(collector, this, rowView, store);
         }
 
-        public <CollectionType extends Collection<Type>> void call(final @NotNull CollectionType collection,
-                                                                   final @NotNull Consumer<Type> enricher) {
+        public <CollectionType extends Collection<Type>> void call(@NotNull final CollectionType collection,
+                                                                   @NotNull final Consumer<Type> enricher) {
             this.call(collection);
             Objects.requireNonNull(collector).applyOnAdded(enricher);
         }
 
-        public <CollectionType extends Collection<Type>> void call(final @NotNull CollectionType collection,
-                                                                   final @NotNull Consumer<Type> enricher,
-                                                                   final @NotNull Consumer<Type> accessed) {
+        public <CollectionType extends Collection<Type>> void call(@NotNull final CollectionType collection,
+                                                                   @NotNull final Consumer<Type> enricher,
+                                                                   @NotNull final Consumer<Type> accessed) {
             this.call(collection, enricher);
             Objects.requireNonNull(collector).applyOnAccessed(accessed);
         }

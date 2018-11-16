@@ -3,9 +3,9 @@ package jdbi_modules.internal;
 import jdbi_modules.Fallback;
 import jdbi_modules.Store;
 import org.jdbi.v3.core.statement.StatementContext;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Null;
 import java.sql.ResultSet;
 import java.util.Collection;
 import java.util.HashMap;
@@ -24,10 +24,12 @@ class FallbackMeta<Type> {
     private final RowView rowView;
     private final Store store;
 
-    @Nullable
+    @Null
     private CollectorImpl<Collection<Type>, Type> collector = null;
 
-    FallbackMeta(final Fallback<Type> prototype, final RowView rowView, final Map<Class<?>, Object> store) {
+    FallbackMeta(@NotNull final Fallback<Type> prototype,
+                 @NotNull final RowView rowView,
+                 @NotNull final Map<Class<?>, Object> store) {
         this.prototype = prototype;
         this.store = Store.of(new HashMap<>(store));
         this.resultSet = this.store.require(ResultSet.class);
@@ -43,15 +45,15 @@ class FallbackMeta<Type> {
         prototype.map(collector, rowView, store);
     }
 
-    public <CollectionType extends Collection<Type>> void call(final @NotNull CollectionType collection,
-                                                               final @NotNull Consumer<Type> enricher) {
+    public <CollectionType extends Collection<Type>> void call(@NotNull final CollectionType collection,
+                                                               @NotNull final Consumer<Type> enricher) {
         this.call(collection);
         Objects.requireNonNull(collector).applyOnAdded(enricher);
     }
 
-    public <CollectionType extends Collection<Type>> void call(final @NotNull CollectionType collection,
-                                                               final @NotNull Consumer<Type> enricher,
-                                                               final @NotNull Consumer<Type> accessed) {
+    public <CollectionType extends Collection<Type>> void call(@NotNull final CollectionType collection,
+                                                               @NotNull final Consumer<Type> enricher,
+                                                               @NotNull final Consumer<Type> accessed) {
         this.call(collection, enricher);
         Objects.requireNonNull(collector).applyOnAccessed(accessed);
     }

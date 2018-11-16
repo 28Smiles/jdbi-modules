@@ -1,5 +1,7 @@
 package jdbi_modules.base;
 
+import javax.validation.constraints.NotNull;
+
 /**
  * @since 12.11.2018
  * @param <Type> the type of the value of the modifier
@@ -9,10 +11,11 @@ public abstract class DefinitionPrototype<Type> extends QueryModifier<Type> {
      * @param name  the name of the binding
      * @param value the value of the binding
      */
-    public DefinitionPrototype(final String name, final Type value) {
+    public DefinitionPrototype(@NotNull final String name, @NotNull final Type value) {
         super(name, value);
     }
 
+    @NotNull
     @Override
     public final String getInSql() {
         return '<' + getName() + '>';

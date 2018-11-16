@@ -1,8 +1,8 @@
 package jdbi_modules;
 
 import org.jdbi.v3.core.statement.Query;
-import org.jetbrains.annotations.NotNull;
 
+import javax.validation.constraints.NotNull;
 import java.util.Iterator;
 import java.util.Set;
 import java.util.Stack;

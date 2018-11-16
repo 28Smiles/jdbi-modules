@@ -2,6 +2,7 @@ package jdbi_modules;
 
 import jdbi_modules.internal.RowView;
 
+import javax.validation.constraints.NotNull;
 import java.util.Collection;
 
 /**
@@ -14,5 +15,5 @@ public interface Fallback<Type> {
      * @param rowView   the row view
      * @param store     the store
      */
-    void map(Collector<Collection<Type>, Type> collector, RowView rowView, Store store);
+    void map(@NotNull Collector<Collection<Type>, Type> collector, @NotNull RowView rowView, @NotNull Store store);
 }

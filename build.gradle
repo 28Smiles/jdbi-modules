@@ -16,7 +16,7 @@ repositories {
 dependencies {
     compile group: 'org.jdbi', name: 'jdbi3-sqlobject', version: '3.5.1'
     compile group: 'com.rainerhahnekamp', name: 'sneakythrow', version: '1.1.0'
-    compile group: 'org.jetbrains', name: 'annotations', version: '16.0.3'
+    compile group: 'javax.validation', name: 'validation-api', version: '1.1.0.Final'
 
     testCompile group: 'org.assertj', name: 'assertj-core', version: '3.11.1'
     testCompile group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: '5.3.1'

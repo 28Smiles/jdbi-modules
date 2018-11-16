@@ -5,8 +5,8 @@ import jdbi_modules.internal.PrefixGenerator;
 import jdbi_modules.internal.RowView;
 import org.jdbi.v3.core.Handle;
 import org.jdbi.v3.core.mapper.RowMapper;
-import org.jetbrains.annotations.NotNull;
 
+import javax.validation.constraints.NotNull;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;

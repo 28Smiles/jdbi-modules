@@ -1,9 +1,9 @@
 package jdbi_modules;
 
 import org.jdbi.v3.core.mapper.RowMapper;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Null;
 import java.sql.SQLException;
 import java.util.Collection;
 import java.util.List;
@@ -62,7 +62,7 @@ public interface Collector<CollectionType extends Collection<Type>, Type> {
      * @param applier a consumer to apply on the accessed object
      * @return this
      */
-    Collector<CollectionType, Type> appendUnique(@Nullable Type type, @NotNull Consumer<Type> applier);
+    Collector<CollectionType, Type> appendUnique(@Null Type type, @NotNull Consumer<Type> applier);
 
     /**
      * Appends an object to the collection if it's not already contained in the collection.
@@ -70,7 +70,7 @@ public interface Collector<CollectionType extends Collection<Type>, Type> {
      * @param type the object to append
      * @return this
      */
-    Collector<CollectionType, Type> appendUnique(@Nullable Type type);
+    Collector<CollectionType, Type> appendUnique(@Null Type type);
 
     /**
      * Appends an object to the collection and applies the function on the added object.
@@ -79,7 +79,7 @@ public interface Collector<CollectionType extends Collection<Type>, Type> {
      * @param applyer a consumer to apply on the object
      * @return this
      */
-    Collector<CollectionType, Type> append(@Nullable Type type, @NotNull Consumer<Type> applyer);
+    Collector<CollectionType, Type> append(@Null Type type, @NotNull Consumer<Type> applyer);
 
     /**
      * Appends an object to the collection.
@@ -87,7 +87,7 @@ public interface Collector<CollectionType extends Collection<Type>, Type> {
      * @param type the object to append
      * @return this
      */
-    Collector<CollectionType, Type> append(@Nullable Type type);
+    Collector<CollectionType, Type> append(@Null Type type);
 
     /**
      * Appends an Object fetched from the {@link jdbi_modules.internal.RowView} to the collection if it's not already contained in the collection,

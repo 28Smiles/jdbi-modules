@@ -1,8 +1,8 @@
 package jdbi_modules;
 
 import org.jdbi.v3.core.generic.GenericType;
-import org.jetbrains.annotations.NotNull;
 
+import javax.validation.constraints.NotNull;
 import java.util.Collection;
 import java.util.function.Consumer;
 

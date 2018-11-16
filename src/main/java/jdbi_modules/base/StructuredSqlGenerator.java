@@ -2,8 +2,8 @@ package jdbi_modules.base;
 
 import jdbi_modules.QueryModifier;
 import org.jdbi.v3.core.statement.Query;
-import org.jetbrains.annotations.NotNull;
 
+import javax.validation.constraints.NotNull;
 import java.util.Iterator;
 import java.util.Objects;
 import java.util.Set;

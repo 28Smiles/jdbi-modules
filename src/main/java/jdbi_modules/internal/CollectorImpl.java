@@ -3,9 +3,9 @@ package jdbi_modules.internal;
 import jdbi_modules.Collector;
 import org.jdbi.v3.core.mapper.RowMapper;
 import org.jdbi.v3.core.statement.StatementContext;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Null;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -48,7 +48,7 @@ class CollectorImpl<CollectionType extends Collection<Type>, Type> implements Co
     }
 
     @Override
-    public CollectorImpl<CollectionType, Type> appendUnique(@Nullable final Type type, @NotNull final Consumer<Type> applier) {
+    public CollectorImpl<CollectionType, Type> appendUnique(@Null final Type type, @NotNull final Consumer<Type> applier) {
         if (Objects.isNull(type)) {
             return this;
         }
@@ -63,7 +63,7 @@ class CollectorImpl<CollectionType extends Collection<Type>, Type> implements Co
     }
 
     @Override
-    public CollectorImpl<CollectionType, Type> appendUnique(@Nullable final Type type) {
+    public CollectorImpl<CollectionType, Type> appendUnique(@Null final Type type) {
         if (Objects.isNull(type)) {
             return this;
         }
@@ -76,7 +76,7 @@ class CollectorImpl<CollectionType extends Collection<Type>, Type> implements Co
     }
 
     @Override
-    public CollectorImpl<CollectionType, Type> append(@Nullable final Type type, @NotNull final Consumer<Type> applyer) {
+    public CollectorImpl<CollectionType, Type> append(@Null final Type type, @NotNull final Consumer<Type> applyer) {
         if (Objects.isNull(type)) {
             return this;
         }
@@ -88,7 +88,7 @@ class CollectorImpl<CollectionType extends Collection<Type>, Type> implements Co
     }
 
     @Override
-    public CollectorImpl<CollectionType, Type> append(@Nullable final Type type) {
+    public CollectorImpl<CollectionType, Type> append(@Null final Type type) {
         if (Objects.isNull(type)) {
             return this;
         }

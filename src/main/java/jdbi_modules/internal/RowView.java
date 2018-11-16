@@ -7,6 +7,7 @@ import org.jdbi.v3.core.mapper.NoSuchMapperException;
 import org.jdbi.v3.core.mapper.RowMapper;
 import org.jdbi.v3.core.statement.StatementContext;
 
+import javax.validation.constraints.NotNull;
 import java.lang.reflect.Type;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -30,10 +31,11 @@ public class RowView {
     private final Map<Type, RowMapper<?>> rowMappers = new ConcurrentHashMap<>();
     private final Map<Type, ColumnMapper<?>> columnMappers;
 
-    RowView(final String modulePrefix, final Map<Type, Function<String, RowMapper<?>>> rowMapperFactorys,
-            final Map<Type, ColumnMapper<?>> commonColumnMapperMap,
-            final ResultSet rs,
-            final StatementContext ctx) {
+    RowView(@NotNull final String modulePrefix,
+            @NotNull final Map<Type, Function<String, RowMapper<?>>> rowMapperFactorys,
+            @NotNull final Map<Type, ColumnMapper<?>> commonColumnMapperMap,
+            @NotNull final ResultSet rs,
+            @NotNull final StatementContext ctx) {
         this.modulePrefix = modulePrefix;
         this.rs = rs;
         this.ctx = ctx;
@@ -48,7 +50,7 @@ public class RowView {
      * @param rowType the Class of the type
      * @return the materialized T
      */
-    public <T> T getRow(final Class<T> rowType) {
+    public <T> T getRow(@NotNull final Class<T> rowType) {
         return rowType.cast(getRow((Type) rowType));
     }
 
@@ -60,7 +62,7 @@ public class RowView {
      * @return the materialized T
      */
     @SuppressWarnings("unchecked")
-    public <T> T getRow(final GenericType<T> rowType) {
+    public <T> T getRow(@NotNull final GenericType<T> rowType) {
         return (T) getRow(rowType.getType());
     }
 
@@ -70,7 +72,7 @@ public class RowView {
      * @param type the type to map
      * @return the materialized object
      */
-    public Object getRow(final Type type) {
+    public Object getRow(@NotNull final Type type) {
         try {
             return rowMapperFor(type).map(rs, ctx);
         } catch (final SQLException e) {
@@ -94,7 +96,7 @@ public class RowView {
      * @param type   the Class of the type
      * @return the materialized T
      */
-    public <T> T getColumn(final String column, final Class<T> type) {
+    public <T> T getColumn(@NotNull final String column, @NotNull final Class<T> type) {
         return type.cast(getColumn(column, (Type) type));
     }
 
@@ -106,7 +108,7 @@ public class RowView {
      * @param type   the Class of the type
      * @return the materialized T
      */
-    public <T> T getColumn(final int column, final Class<T> type) {
+    public <T> T getColumn(final int column, @NotNull final Class<T> type) {
         return type.cast(getColumn(column, (Type) type));
     }
 
@@ -119,7 +121,7 @@ public class RowView {
      * @return the materialized T
      */
     @SuppressWarnings("unchecked")
-    public <T> T getColumn(final String column, final GenericType<T> type) {
+    public <T> T getColumn(@NotNull final String column, @NotNull final GenericType<T> type) {
         return (T) getColumn(column, type.getType());
     }
 
@@ -132,7 +134,7 @@ public class RowView {
      * @return the materialized T
      */
     @SuppressWarnings("unchecked")
-    public <T> T getColumn(final int column, final GenericType<T> type) {
+    public <T> T getColumn(final int column, @NotNull final GenericType<T> type) {
         return (T) getColumn(column, type.getType());
     }
 
@@ -143,7 +145,7 @@ public class RowView {
      * @param type   the Type of the type
      * @return the materialized object
      */
-    public Object getColumn(final String column, final Type type) {
+    public Object getColumn(@NotNull final String column, @NotNull final Type type) {
         try {
             return columnMapperFor(type).map(rs, modulePrefix + column, ctx);
         } catch (final SQLException e) {
@@ -158,7 +160,7 @@ public class RowView {
      * @param type   the Class of the type
      * @return the materialized object
      */
-    public Object getColumn(final int column, final Type type) {
+    public Object getColumn(final int column, @NotNull final Type type) {
         try {
             return columnMapperFor(type).map(rs, column, ctx);
         } catch (final SQLException e) {
@@ -166,7 +168,7 @@ public class RowView {
         }
     }
 
-    private ColumnMapper<?> columnMapperFor(final Type type) {
+    private ColumnMapper<?> columnMapperFor(@NotNull final Type type) {
         return columnMappers.computeIfAbsent(type, t ->
                 ctx.findColumnMapperFor(t)
                         .orElseThrow(() -> new NoSuchMapperException("No column mapper registered for " + t)));
