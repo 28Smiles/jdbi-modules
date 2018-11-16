@@ -75,7 +75,7 @@ public class WorkerModule extends Module<Worker, Class<?>, StructuredSql, Struct
 
             @NotNull
             @Override
-            public String sortOrder() {
+            public String sortBy() {
                 return "{{position}} ASC";
             }
 

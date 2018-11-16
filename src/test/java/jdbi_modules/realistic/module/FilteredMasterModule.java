@@ -50,7 +50,7 @@ public class FilteredMasterModule extends MasterModule {
 
             @NotNull
             @Override
-            public String sortOrder() {
+            public String sortBy() {
                 return "";
             }
 

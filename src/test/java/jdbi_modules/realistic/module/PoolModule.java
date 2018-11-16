@@ -67,7 +67,7 @@ public class PoolModule extends Module<Pool, Class<?>, StructuredSql, Structured
 
             @NotNull
             @Override
-            public String sortOrder() {
+            public String sortBy() {
                 return "";
             }
 

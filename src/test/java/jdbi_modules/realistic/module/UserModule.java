@@ -61,7 +61,7 @@ public class UserModule extends Module<User, Class<?>, StructuredSql, Structured
 
             @NotNull
             @Override
-            public String sortOrder() {
+            public String sortBy() {
                 return "";
             }
 

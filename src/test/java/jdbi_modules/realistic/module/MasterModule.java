@@ -84,7 +84,7 @@ public class MasterModule extends Module<Master, Class<?>, StructuredSql, Struct
 
             @NotNull
             @Override
-            public String sortOrder() {
+            public String sortBy() {
                 return "";
             }
 
