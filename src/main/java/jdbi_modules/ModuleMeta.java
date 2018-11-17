@@ -82,11 +82,11 @@ public interface ModuleMeta<KeyType> {
      * @param enricher the consumer to apply after adding something to the collection
      * @return the value fetched
      */
-    @Null
-    default <T> T callSubmodule(@NotNull KeyType key, @NotNull Class<T> type, @NotNull Consumer<T> enricher) {
+    @NotNull
+    default <T> ModuleMeta<KeyType> callSubmodule(@NotNull KeyType key, @NotNull Class<T> type, @NotNull Consumer<T> enricher) {
         final T t = callSubmodule(key, type);
         enricher.accept(t);
-        return t;
+        return this;
     }
 
     /**
@@ -96,10 +96,10 @@ public interface ModuleMeta<KeyType> {
      * @param enricher the consumer to apply after adding something to the collection
      * @return the value fetched
      */
-    @Null
-    default <T> T callSubmodule(@NotNull KeyType key, @NotNull GenericType<T> type, @NotNull Consumer<T> enricher) {
+    @NotNull
+    default <T> ModuleMeta<KeyType> callSubmodule(@NotNull KeyType key, @NotNull GenericType<T> type, @NotNull Consumer<T> enricher) {
         final T t = callSubmodule(key, type);
         enricher.accept(t);
-        return t;
+        return this;
     }
 }
