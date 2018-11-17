@@ -74,7 +74,7 @@ public interface StructuredSqlGenerator extends jdbi_modules.SqlGenerator<Struct
      * @return the filter of the query.
      */
     @NotNull
-    default String filter() {
+    default String where() {
         return "";
     }
 
@@ -89,7 +89,7 @@ public interface StructuredSqlGenerator extends jdbi_modules.SqlGenerator<Struct
                 route(modulePrefix, select()),
                 route(modulePrefix, from()),
                 route(modulePrefix, joins()),
-                route(modulePrefix, filter()),
+                route(modulePrefix, where()),
                 route(modulePrefix, sortBy()));
         queryModifiers.stream().map(qm -> structuredSql.applyQueryModifier(qm, queryModifierNameGenerator)).forEach(queryModifierApplier::add);
         return structuredSql;
@@ -106,7 +106,7 @@ public interface StructuredSqlGenerator extends jdbi_modules.SqlGenerator<Struct
         sqlType.select += (!sqlType.select.isEmpty() && !select().isEmpty() ? ',' : "") + route(modulePrefix, select());
         sqlType.from += (!sqlType.from.isEmpty() && !from().isEmpty() ? ' ' : "") + route(modulePrefix, from());
         sqlType.joins += (!sqlType.joins.isEmpty() && !joins().isEmpty() ? ' ' : "") + route(modulePrefix, joins());
-        sqlType.filter += (!sqlType.filter.isEmpty() && !filter().isEmpty() ? " AND " : "") + route(modulePrefix, filter());
+        sqlType.filter += (!sqlType.filter.isEmpty() && !where().isEmpty() ? " AND " : "") + route(modulePrefix, where());
         sqlType.sortOrder += (!sqlType.sortOrder.isEmpty() && !sortBy().isEmpty() ? ", " : "") + route(modulePrefix, sortBy());
         queryModifiers.stream().map(qm -> sqlType.applyQueryModifier(qm, queryModifierNameGenerator)).forEach(queryModifierApplier::add);
         return sqlType;

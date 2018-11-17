@@ -73,7 +73,7 @@ class TestStructuredSqlGenerator {
 
         @NotNull
         @Override
-        public String filter() {
+        public String where() {
             return "";
         }
     }
@@ -105,7 +105,7 @@ class TestStructuredSqlGenerator {
 
         @NotNull
         @Override
-        public String filter() {
+        public String where() {
             return "A";
         }
     }

@@ -88,7 +88,7 @@ public class MasterModule extends Module<Master, Class<?>, StructuredSql, Struct
 
             @NotNull
             @Override
-            public String filter() {
+            public String where() {
                 return "";
             }
         };

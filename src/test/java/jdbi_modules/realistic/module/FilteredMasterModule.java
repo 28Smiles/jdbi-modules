@@ -56,7 +56,7 @@ public class FilteredMasterModule extends MasterModule {
 
             @NotNull
             @Override
-            public String filter() {
+            public String where() {
                 return "{{master}}.id IN (<ids>)";
             }
         };

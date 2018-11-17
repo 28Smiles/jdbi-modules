@@ -80,7 +80,7 @@ public class WorkerModule extends Module<Worker, Class<?>, StructuredSql, Struct
 
             @NotNull
             @Override
-            public String filter() {
+            public String where() {
                 return "";
             }
         };

@@ -72,7 +72,7 @@ public class PoolModule extends Module<Pool, Class<?>, StructuredSql, Structured
 
             @NotNull
             @Override
-            public String filter() {
+            public String where() {
                 return "";
             }
         };
