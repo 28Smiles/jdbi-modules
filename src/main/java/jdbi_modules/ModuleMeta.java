@@ -80,7 +80,7 @@ public interface ModuleMeta<KeyType> {
      * @param type     the class of the type expected
      * @param <T>      the type expected
      * @param enricher the consumer to apply after adding something to the collection
-     * @return the value fetched
+     * @return this
      */
     @NotNull
     default <T> ModuleMeta<KeyType> callSubmodule(@NotNull KeyType key, @NotNull Class<T> type, @NotNull Consumer<T> enricher) {
@@ -94,7 +94,7 @@ public interface ModuleMeta<KeyType> {
      * @param type     the class of the type expected
      * @param <T>      the type expected
      * @param enricher the consumer to apply after adding something to the collection
-     * @return the value fetched
+     * @return this
      */
     @NotNull
     default <T> ModuleMeta<KeyType> callSubmodule(@NotNull KeyType key, @NotNull GenericType<T> type, @NotNull Consumer<T> enricher) {
