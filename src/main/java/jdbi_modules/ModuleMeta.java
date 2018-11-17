@@ -3,6 +3,7 @@ package jdbi_modules;
 import org.jdbi.v3.core.generic.GenericType;
 
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Null;
 import java.util.Collection;
 import java.util.function.Consumer;
 
@@ -30,6 +31,7 @@ public interface ModuleMeta<KeyType> {
      * @param <CollectionType> the type of the collection
      * @return this
      */
+    @NotNull
     <T, CollectionType extends Collection<T>> ModuleMeta<KeyType> callSubmodule(@NotNull KeyType key, @NotNull CollectionType collection);
 
     /**
@@ -40,6 +42,7 @@ public interface ModuleMeta<KeyType> {
      * @param <CollectionType> the type of the collection
      * @return this
      */
+    @NotNull
     <T, CollectionType extends Collection<T>> ModuleMeta<KeyType> callSubmodule(@NotNull KeyType key, @NotNull CollectionType collection, Consumer<T> enricher);
 
     /**
@@ -51,6 +54,7 @@ public interface ModuleMeta<KeyType> {
      * @param <CollectionType> the type of the collection
      * @return this
      */
+    @NotNull
     <T, CollectionType extends Collection<T>> ModuleMeta<KeyType> callSubmodule(@NotNull KeyType key, @NotNull CollectionType collection, Consumer<T> enricher, Consumer<T> accessed);
 
     /**
@@ -59,6 +63,7 @@ public interface ModuleMeta<KeyType> {
      * @param <T>  the type expected
      * @return the value fetched
      */
+    @Null
     <T> T callSubmodule(@NotNull KeyType key, @NotNull Class<T> type);
 
     /**
@@ -67,6 +72,7 @@ public interface ModuleMeta<KeyType> {
      * @param <T>  the type expected
      * @return the value fetched
      */
+    @Null
     <T> T callSubmodule(@NotNull KeyType key, @NotNull GenericType<T> type);
 
     /**
@@ -76,7 +82,8 @@ public interface ModuleMeta<KeyType> {
      * @param enricher the consumer to apply after adding something to the collection
      * @return the value fetched
      */
-    default <T> T callSubmodule(@NotNull KeyType key, @NotNull Class<T> type, Consumer<T> enricher) {
+    @Null
+    default <T> T callSubmodule(@NotNull KeyType key, @NotNull Class<T> type, @NotNull Consumer<T> enricher) {
         final T t = callSubmodule(key, type);
         enricher.accept(t);
         return t;
@@ -89,7 +96,8 @@ public interface ModuleMeta<KeyType> {
      * @param enricher the consumer to apply after adding something to the collection
      * @return the value fetched
      */
-    default <T> T callSubmodule(@NotNull KeyType key, @NotNull GenericType<T> type, Consumer<T> enricher) {
+    @Null
+    default <T> T callSubmodule(@NotNull KeyType key, @NotNull GenericType<T> type, @NotNull Consumer<T> enricher) {
         final T t = callSubmodule(key, type);
         enricher.accept(t);
         return t;
