@@ -74,12 +74,10 @@ public abstract class Module<Type, KeyType, SqlType extends jdbi_modules.SqlType
      * @param collector  the {@link Collector}
      * @param moduleMeta the {@link ModuleMeta}
      * @param rowView    the {@link RowView}
-     * @param store      the {@link Store}
      */
     public abstract void map(@NotNull Collector<Collection<Type>, Type> collector,
                              @NotNull ModuleMeta<KeyType> moduleMeta,
-                             @NotNull RowView rowView,
-                             @NotNull Store store);
+                             @NotNull RowView rowView);
 
     /**
      * Runs the module.

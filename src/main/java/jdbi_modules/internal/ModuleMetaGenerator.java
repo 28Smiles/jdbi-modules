@@ -256,7 +256,7 @@ public class ModuleMetaGenerator<Type, KeyType, SqlType extends jdbi_modules.Sql
                 collector = new CollectorImpl<>(collection, rowView, resultSet, statementContext);
             }
             collector.useCollection(collection);
-            prototype.map(collector, this, rowView, store);
+            prototype.map(collector, this, rowView);
         }
 
         public <CollectionType extends Collection<Type>> void call(@NotNull final CollectionType collection,

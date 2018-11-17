@@ -4,7 +4,6 @@ import jdbi_modules.Collector;
 import jdbi_modules.Module;
 import jdbi_modules.ModuleMeta;
 import jdbi_modules.QueryModifier;
-import jdbi_modules.Store;
 import jdbi_modules.base.StructuredSql;
 import jdbi_modules.base.StructuredSqlGenerator;
 import jdbi_modules.bean.User;
@@ -90,8 +89,7 @@ public class WorkerModule extends Module<Worker, Class<?>, StructuredSql, Struct
     @Override
     public void map(@NotNull final Collector<Collection<Worker>, Worker> collector,
                     @NotNull final ModuleMeta<Class<?>> moduleMeta,
-                    @NotNull final RowView rowView,
-                    @NotNull final Store store) {
+                    @NotNull final RowView rowView) {
         if (rowView.getColumn("id", Long.class) != null) {
             collector.appendUniqueWithRowView(Worker.class, worker -> {
                 worker.setUser(moduleMeta.callSubmodule(User.class, User.class));

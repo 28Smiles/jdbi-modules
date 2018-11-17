@@ -76,8 +76,7 @@ public class UserModule extends Module<User, Class<?>, StructuredSql, Structured
     @Override
     public void map(@NotNull final Collector<Collection<User>, User> collector,
                     @NotNull final ModuleMeta<Class<?>> moduleMeta,
-                    @NotNull final RowView rowView,
-                    @NotNull final Store store) {
+                    @NotNull final RowView rowView) {
         if (rowView.getColumn("id", Long.class) != null) {
             collector.appendUniqueWithRowView(User.class);
         }

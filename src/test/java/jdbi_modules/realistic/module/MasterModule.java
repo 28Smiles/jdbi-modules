@@ -4,7 +4,6 @@ import jdbi_modules.Collector;
 import jdbi_modules.Module;
 import jdbi_modules.ModuleMeta;
 import jdbi_modules.QueryModifier;
-import jdbi_modules.Store;
 import jdbi_modules.base.StructuredSql;
 import jdbi_modules.base.StructuredSqlGenerator;
 import jdbi_modules.internal.RowView;
@@ -42,10 +41,9 @@ public class MasterModule extends Module<Master, Class<?>, StructuredSql, Struct
     @Override
     public void map(@NotNull final Collector<Collection<Master>, Master> collector,
                     @NotNull final ModuleMeta<Class<?>> moduleMeta,
-                    @NotNull final RowView rowView,
-                    @NotNull final Store store) {
+                    @NotNull final RowView rowView) {
         Assertions.assertThat(moduleMeta.getModulePrefix()).isEqualTo("mod0");
-        Assertions.assertThat(moduleMeta.getStore()).isSameAs(store);
+        Assertions.assertThat(moduleMeta.getStore().require(RowView.class)).isSameAs(rowView);
         if (rowView.getColumn("id", Long.class) != null) {
             collector.appendUniqueWithRowView(Master.class, master -> {
                 moduleMeta.callSubmodule(Pool.class, master.getPools(), pool -> {
