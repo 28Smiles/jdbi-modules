@@ -1,3 +1,9 @@
+# v2.0.0
+
+- Restructure jdbi-modules
+- Remove Store from ModuleMeta::map
+- Rename StructuredSqlGenerator::filter to where
+
 # v1.1.0
 
 - Add equals and hashcode to query modifiers
