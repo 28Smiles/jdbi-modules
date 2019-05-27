@@ -1,3 +1,11 @@
+# v1.1.2
+
+- Fix bug in string replacement (Use antlr lexer)
+
+# v1.1.1
+
+- Fix bug in string replacement
+
 # v1.1.0
 
 - Add equals and hashcode to query modifiers
@@ -42,15 +50,7 @@
 
 - Fixed an error in the StructuredSqlGenerator implementation
 
-# v1.1.0
+# v0.1.0
 
 - Added method to retrieve store from ModuleMeta
 - Added wildcard to modules row mappers
-
-# v1.1.1
-
-- Fix bug in string replacement
-
-# v1.1.2
-
-- Fix bug in string replacement (Use antlr lexer)
