@@ -50,3 +50,7 @@
 # v1.1.1
 
 - Fix bug in string replacement
+
+# v1.1.2
+
+- Fix bug in string replacement (Use antlr lexer)

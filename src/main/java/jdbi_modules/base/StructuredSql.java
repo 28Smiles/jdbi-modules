@@ -2,10 +2,9 @@ package jdbi_modules.base;
 
 import jdbi_modules.QueryModifier;
 import jdbi_modules.SqlType;
+import jdbi_modules.base.lexer.QueryModifierLexer;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.Token;
-import org.jdbi.v3.core.internal.lexer.ColonStatementLexer;
-import org.jdbi.v3.core.internal.lexer.DefineStatementLexer;
 import org.jdbi.v3.core.statement.Query;
 import org.jetbrains.annotations.NotNull;
 
@@ -13,8 +12,6 @@ import java.util.Iterator;
 import java.util.function.Consumer;
 
 import static org.antlr.v4.runtime.Recognizer.EOF;
-import static org.jdbi.v3.core.internal.lexer.ColonStatementLexer.NAMED_PARAM;
-import static org.jdbi.v3.core.internal.lexer.DefineStatementLexer.DEFINE;
 
 /**
  * @since 14.04.2018
@@ -74,31 +71,21 @@ public class StructuredSql implements SqlType {
     }
 
     private String applyQueryModifier(final QueryModifier queryModifier, final String queryModifierName, final String sql) {
-        String substitutedSql = sql;
+        StringBuilder parsedSql = new StringBuilder();
         final String inSql = queryModifier.getInSql();
         final String renamed = inSql.replace(queryModifier.getName(), queryModifierName);
-        final ColonStatementLexer colonLexer = new ColonStatementLexer(CharStreams.fromString(sql));
-        Token ct = colonLexer.nextToken();
+        final QueryModifierLexer lexer = new QueryModifierLexer(CharStreams.fromString(sql));
+        Token ct = lexer.nextToken();
         while (ct.getType() != EOF) {
-            if (ct.getType() == NAMED_PARAM) {
-                if (ct.getText().equals(inSql)) {
-                    substitutedSql = substitutedSql.substring(0, ct.getStartIndex()) + renamed + substitutedSql.substring(ct.getStopIndex() + 1);
-                }
+            if ((ct.getType() == QueryModifierLexer.BINDING || ct.getType() ==  QueryModifierLexer.DEFINITION)
+                    && ct.getText().equals(inSql)) {
+                parsedSql.append(renamed);
+            } else {
+                parsedSql.append(ct.getText());
             }
-            ct = colonLexer.nextToken();
+            ct = lexer.nextToken();
         }
-        final DefineStatementLexer defineLexer = new DefineStatementLexer(CharStreams.fromString(sql));
-        Token dt = defineLexer.nextToken();
-        while (dt.getType() != EOF) {
-            if (dt.getType() == DEFINE) {
-                if (dt.getText().equals(inSql)) {
-                    substitutedSql = substitutedSql.substring(0, dt.getStartIndex()) + renamed + substitutedSql.substring(dt.getStopIndex() + 1);
-                }
-            }
-            dt = defineLexer.nextToken();
-        }
-
-        return substitutedSql;
+        return parsedSql.toString();
     }
 
     private String conditionalConcat(final String prepend, final String str) {
