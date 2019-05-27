@@ -2,11 +2,19 @@ package jdbi_modules.base;
 
 import jdbi_modules.QueryModifier;
 import jdbi_modules.SqlType;
+import org.antlr.v4.runtime.CharStreams;
+import org.antlr.v4.runtime.Token;
+import org.jdbi.v3.core.internal.lexer.ColonStatementLexer;
+import org.jdbi.v3.core.internal.lexer.DefineStatementLexer;
 import org.jdbi.v3.core.statement.Query;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Iterator;
 import java.util.function.Consumer;
+
+import static org.antlr.v4.runtime.Recognizer.EOF;
+import static org.jdbi.v3.core.internal.lexer.ColonStatementLexer.NAMED_PARAM;
+import static org.jdbi.v3.core.internal.lexer.DefineStatementLexer.DEFINE;
 
 /**
  * @since 14.04.2018
@@ -56,15 +64,41 @@ public class StructuredSql implements SqlType {
      */
     public Consumer<Query> applyQueryModifier(@NotNull final QueryModifier queryModifier, @NotNull final Iterator<String> queryModifierNameGenerator) {
         final String queryModifierName = queryModifierNameGenerator.next();
-        final String inSql = queryModifier.getInSql();
-        final String name = queryModifier.getName();
-        cte = cte.replace(inSql, inSql.replace(name, queryModifierName));
-        select = select.replace(inSql, inSql.replace(name, queryModifierName));
-        from = from.replace(inSql, inSql.replace(name, queryModifierName));
-        joins = joins.replace(inSql, inSql.replace(name, queryModifierName));
-        filter = filter.replace(inSql, inSql.replace(name, queryModifierName));
-        sortOrder = sortOrder.replace(inSql, inSql.replace(name, queryModifierName));
+        cte = this.applyQueryModifier(queryModifier, queryModifierName, cte);
+        select = this.applyQueryModifier(queryModifier, queryModifierName, select);
+        from = this.applyQueryModifier(queryModifier, queryModifierName, from);
+        joins = this.applyQueryModifier(queryModifier, queryModifierName, joins);
+        filter = this.applyQueryModifier(queryModifier, queryModifierName, filter);
+        sortOrder = this.applyQueryModifier(queryModifier, queryModifierName, sortOrder);
         return query -> queryModifier.apply(query, queryModifierName);
+    }
+
+    private String applyQueryModifier(final QueryModifier queryModifier, final String queryModifierName, final String sql) {
+        String substitutedSql = sql;
+        final String inSql = queryModifier.getInSql();
+        final String renamed = inSql.replace(queryModifier.getName(), queryModifierName);
+        final ColonStatementLexer colonLexer = new ColonStatementLexer(CharStreams.fromString(sql));
+        Token ct = colonLexer.nextToken();
+        while (ct.getType() != EOF) {
+            if (ct.getType() == NAMED_PARAM) {
+                if (ct.getText().equals(inSql)) {
+                    substitutedSql = substitutedSql.substring(0, ct.getStartIndex()) + renamed + substitutedSql.substring(ct.getStopIndex() + 1);
+                }
+            }
+            ct = colonLexer.nextToken();
+        }
+        final DefineStatementLexer defineLexer = new DefineStatementLexer(CharStreams.fromString(sql));
+        Token dt = defineLexer.nextToken();
+        while (dt.getType() != EOF) {
+            if (dt.getType() == DEFINE) {
+                if (dt.getText().equals(inSql)) {
+                    substitutedSql = substitutedSql.substring(0, dt.getStartIndex()) + renamed + substitutedSql.substring(dt.getStopIndex() + 1);
+                }
+            }
+            dt = defineLexer.nextToken();
+        }
+
+        return substitutedSql;
     }
 
     private String conditionalConcat(final String prepend, final String str) {

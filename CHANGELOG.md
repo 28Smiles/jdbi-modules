@@ -46,3 +46,7 @@
 
 - Added method to retrieve store from ModuleMeta
 - Added wildcard to modules row mappers
+
+# v0.1.1
+
+- Fix bug in string replacement

@@ -38,7 +38,7 @@ class TestStructuredSqlGenerator {
     }
 
     @ParameterizedTest
-    @ValueSource(strings = {"id", "mod0exercise.name->>'de'", "exercise.id", "exercise_id", "ÄÖÜßäöü", "_", "-", "0123456789", "a<b", "created - updated",
+    @ValueSource(strings = {"id", "mod0exercise.name->>'de'", "exercise.id", "exercise_id", "_", "-", "0123456789", "a<b", "created - updated",
             "function()"})
     void testRoutingSuccessful(final String value) {
         final Stack<String> stack = new Stack<>();

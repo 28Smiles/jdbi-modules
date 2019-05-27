@@ -5,6 +5,7 @@ import jdbi_modules.bean.Bean;
 import jdbi_modules.bean.Master;
 import jdbi_modules.extension.JdbiExtension;
 import jdbi_modules.extension.PostgresExtension;
+import jdbi_modules.realistic.module.BindingFilteredMasterModule;
 import jdbi_modules.realistic.module.FilteredMasterModule;
 import org.assertj.core.api.Assertions;
 import org.jdbi.v3.core.Jdbi;
@@ -44,6 +45,14 @@ public class TestRealisticBinding {
         final List<Master> mastersF = scene.getMasters().subList(1, 2);
         final Set<Master> masters = jdbi.withHandle(
                 handle -> new FilteredMasterModule(mastersF.stream().map(Bean::getId).collect(Collectors.toList())).run(handle, new HashSet<>()));
+        assertThat(masters).containsExactlyInAnyOrderElementsOf(mastersF);
+    }
+
+    @Test
+    void realisticTest3(final Jdbi jdbi) {
+        final List<Master> mastersF = scene.getMasters().subList(0, 2);
+        final Set<Master> masters = jdbi.withHandle(
+                handle -> new BindingFilteredMasterModule(mastersF.stream().map(Bean::getId).collect(Collectors.toList())).run(handle, new HashSet<>()));
         assertThat(masters).containsExactlyInAnyOrderElementsOf(mastersF);
     }
 }
