@@ -56,7 +56,7 @@ public class PostgresExtension implements BeforeEachCallback, BeforeAllCallback,
         final Dotenv dotenv = Dotenv.configure().ignoreIfMissing().load();
         if (dotenv.get("DEDICATED_TEST_DATABASE_HOST") == null) {
             System.out.println("Did not find a dedicated Database, using embedded postgres...");
-            final EmbeddedPostgres postgres = new EmbeddedPostgres(Version.V10_3);
+            final EmbeddedPostgres postgres = new EmbeddedPostgres(Version.V10_6);
             postgres.start(EmbeddedPostgres.DEFAULT_HOST, 5422, EmbeddedPostgres.DEFAULT_DB_NAME);
             final PGSimpleDataSource dataSource = new PGSimpleDataSource();
             dataSource.setServerName(EmbeddedPostgres.DEFAULT_HOST);

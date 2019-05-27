@@ -14,15 +14,14 @@ repositories {
 }
 
 dependencies {
-    compile group: 'org.jdbi', name: 'jdbi3-sqlobject', version: '3.5.1'
-    compile group: 'com.rainerhahnekamp', name: 'sneakythrow', version: '1.1.0'
-    compile group: 'org.jetbrains', name: 'annotations', version: '16.0.3'
+    compile group: 'org.jdbi', name: 'jdbi3-sqlobject', version: '3.8.1'
+    compile group: 'com.rainerhahnekamp', name: 'sneakythrow', version: '1.2.0'
+    compile group: 'org.jetbrains', name: 'annotations', version: '17.0.0'
 
-    testCompile group: 'org.assertj', name: 'assertj-core', version: '3.11.1'
-    testCompile group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: '5.3.1'
-    testCompile group: 'ru.yandex.qatools.embed', name: 'postgresql-embedded', version: '2.9'
+    testCompile group: 'org.assertj', name: 'assertj-core', version: '3.12.2'
+    testCompile group: 'ru.yandex.qatools.embed', name: 'postgresql-embedded', version: '2.10'
     testCompile group: 'org.paumard', name: 'streams-utils', version: '2.0'
     testCompile group: 'org.postgresql', name: 'postgresql', version: '42.2.5'
     testCompile group: 'org.mockito', name: 'mockito-core', version: '2.23.0'
-    testCompile group: 'io.github.cdimascio', name: 'java-dotenv', version: '3.1.3'
+    testCompile group: 'io.github.cdimascio', name: 'java-dotenv', version: '5.1.0'
 }
