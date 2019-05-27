@@ -2,6 +2,11 @@ lexer grammar QueryModifierLexer;
 
 @header {
 package jdbi_modules.base.lexer;
+
+/**
+ * @since 27.05.2019
+ */
+//CHECKSTYLE:OFF
 }
 
 /* Partly lifted from https://github.com/jdbi/jdbi/blob/master/core/src/main/antlr4/org/jdbi/v3/core/internal/lexer/ColonStatementLexer.g4 */

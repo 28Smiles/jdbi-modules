@@ -16,6 +16,7 @@
         <property name="message" value="@since tag is missing or has the wrong format ('@since DD.MM.YYYY' or '@since DD.MM.YY')"/>
     </module>
     <module name="TreeWalker">
+        <module name="SuppressionCommentFilter"/>
         <module name="RequireThis"/>
         <module name="JavadocMethod">
             <property name="scope" value="public"/>
