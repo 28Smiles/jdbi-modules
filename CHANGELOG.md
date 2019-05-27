@@ -42,11 +42,11 @@
 
 - Fixed an error in the StructuredSqlGenerator implementation
 
-# v0.1.0
+# v1.1.0
 
 - Added method to retrieve store from ModuleMeta
 - Added wildcard to modules row mappers
 
-# v0.1.1
+# v1.1.1
 
 - Fix bug in string replacement
