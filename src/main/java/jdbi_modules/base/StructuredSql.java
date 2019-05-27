@@ -77,7 +77,7 @@ public class StructuredSql implements SqlType {
         final QueryModifierLexer lexer = new QueryModifierLexer(CharStreams.fromString(sql));
         Token ct = lexer.nextToken();
         while (ct.getType() != EOF) {
-            if ((ct.getType() == QueryModifierLexer.BINDING || ct.getType() ==  QueryModifierLexer.DEFINITION)
+            if ((ct.getType() == QueryModifierLexer.BINDING || ct.getType() == QueryModifierLexer.DEFINITION)
                     && ct.getText().equals(inSql)) {
                 parsedSql.append(renamed);
             } else {
