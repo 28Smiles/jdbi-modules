@@ -66,7 +66,7 @@ public interface ModuleMeta<KeyType> {
      * @param <T>    the type expected
      * @return the value fetched
      */
-    default  <T> T callSubmodule(@NotNull KeyType key, @NotNull Supplier<T> getter) {
+    default <T> T callSubmodule(@NotNull KeyType key, @NotNull Supplier<T> getter) {
         return callSubmodule(key, getter.get());
     }
 

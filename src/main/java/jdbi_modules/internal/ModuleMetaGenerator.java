@@ -12,9 +12,17 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.sql.ResultSet;
-import java.util.*;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
+import java.util.Stack;
 import java.util.function.Consumer;
-import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 /**
@@ -212,9 +220,9 @@ public class ModuleMetaGenerator<Type, KeyType, SqlType extends jdbi_modules.Sql
         }
 
         @Override
-        public <T> T callSubmodule(@NotNull KeyType key, @Nullable T obj) {
+        public <T> T callSubmodule(final @NotNull KeyType key, final @Nullable T obj) {
             final ModuleMetaImpl<T, KeyType, SqlType, SqlGenerator<SqlType>> module = (ModuleMetaImpl<T, KeyType, SqlType, SqlGenerator<SqlType>>) submodules.get(key);
-            final LinkedList<T> list = new LinkedList<>();
+            final List<T> list = new LinkedList<>();
             if (obj != null) {
                 list.add(obj);
             }
