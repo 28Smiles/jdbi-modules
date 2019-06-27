@@ -48,7 +48,7 @@ public class TestQueryModifier {
             assertThat(binding.getInSql()).isEqualTo(":name1");
             assertThat(binding.getName()).isEqualTo("name1");
             assertThat(binding.getValue()).isSameAs(number);
-            AssertionsForClassTypes.assertThat(query.mapTo(Integer.class).findOnly()).isEqualTo(number);
+            AssertionsForClassTypes.assertThat(query.mapTo(Integer.class).one()).isEqualTo(number);
         });
     }
 

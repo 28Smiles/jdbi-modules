@@ -1,10 +1,10 @@
 package jdbi_modules;
 
-import org.jdbi.v3.core.generic.GenericType;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Collection;
 import java.util.function.Consumer;
+import java.util.function.Supplier;
 
 /**
  * @param <KeyType> The type of the key the corresponding module uses
@@ -27,20 +27,18 @@ public interface ModuleMeta<KeyType> {
      * @param key              the key
      * @param collection       the collection
      * @param <T>              the type of the elements of the collection
-     * @param <CollectionType> the type of the collection
      * @return this
      */
-    <T, CollectionType extends Collection<T>> ModuleMeta<KeyType> callSubmodule(@NotNull KeyType key, @NotNull CollectionType collection);
+    <T> ModuleMeta<KeyType> callSubmodule(@NotNull KeyType key, @NotNull Collection<T> collection);
 
     /**
      * @param key              the key
      * @param collection       the collection
      * @param enricher         the consumer to apply after adding something to the collection
      * @param <T>              the type of the elements of the collection
-     * @param <CollectionType> the type of the collection
      * @return this
      */
-    <T, CollectionType extends Collection<T>> ModuleMeta<KeyType> callSubmodule(@NotNull KeyType key, @NotNull CollectionType collection, Consumer<T> enricher);
+    <T> ModuleMeta<KeyType> callSubmodule(@NotNull KeyType key, @NotNull Collection<T> collection, Consumer<T> enricher);
 
     /**
      * @param key              the key
@@ -54,44 +52,23 @@ public interface ModuleMeta<KeyType> {
     <T, CollectionType extends Collection<T>> ModuleMeta<KeyType> callSubmodule(@NotNull KeyType key, @NotNull CollectionType collection, Consumer<T> enricher, Consumer<T> accessed);
 
     /**
-     * @param key  the key
-     * @param type the class of the type expected
-     * @param <T>  the type expected
+     * @param key    the key
+     * @param getter the getter
+     * @param <T>    the type expected
      * @return the value fetched
      */
-    <T> T callSubmodule(@NotNull KeyType key, @NotNull Class<T> type);
+    <T> T callSubmodule(@NotNull KeyType key, @NotNull Supplier<T> getter);
 
     /**
-     * @param key  the key
-     * @param type the class of the type expected
-     * @param <T>  the type expected
+     * @param key    the key
+     * @param getter the getter
+     * @param setter a setter
+     * @param <T>    the type expected
      * @return the value fetched
      */
-    <T> T callSubmodule(@NotNull KeyType key, @NotNull GenericType<T> type);
-
-    /**
-     * @param key      the key
-     * @param type     the class of the type expected
-     * @param <T>      the type expected
-     * @param enricher the consumer to apply after adding something to the collection
-     * @return the value fetched
-     */
-    default <T> T callSubmodule(@NotNull KeyType key, @NotNull Class<T> type, Consumer<T> enricher) {
-        final T t = callSubmodule(key, type);
-        enricher.accept(t);
-        return t;
-    }
-
-    /**
-     * @param key      the key
-     * @param type     the class of the type expected
-     * @param <T>      the type expected
-     * @param enricher the consumer to apply after adding something to the collection
-     * @return the value fetched
-     */
-    default <T> T callSubmodule(@NotNull KeyType key, @NotNull GenericType<T> type, Consumer<T> enricher) {
-        final T t = callSubmodule(key, type);
-        enricher.accept(t);
+    default <T> T callSubmodule(@NotNull KeyType key, @NotNull Supplier<T> getter, Consumer<T> setter) {
+        final T t = callSubmodule(key, getter);
+        setter.accept(t);
         return t;
     }
 }

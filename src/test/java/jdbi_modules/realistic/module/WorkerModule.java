@@ -23,6 +23,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.function.Function;
+import java.util.function.Supplier;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * @since 14.04.2018
@@ -94,39 +97,38 @@ public class WorkerModule extends Module<Worker, Class<?>, StructuredSql, Struct
                     @NotNull final Store store) {
         if (rowView.getColumn("id", Long.class) != null) {
             collector.appendUniqueWithRowView(Worker.class, worker -> {
-                worker.setUser(moduleMeta.callSubmodule(User.class, User.class));
+                worker.setUser(moduleMeta.callSubmodule(User.class, worker::getUser));
 
                 final List<User> users = new ArrayList<>();
                 final List<User> usersAccessed = new ArrayList<>();
                 final List<User> usersAdded = new ArrayList<>();
                 moduleMeta.callSubmodule(User.class, users, usersAdded::add, usersAccessed::add);
-                Assertions.assertThat(usersAccessed).containsExactlyInAnyOrderElementsOf(users);
-                Assertions.assertThat(usersAdded).containsExactlyInAnyOrderElementsOf(users);
+                assertThat(usersAccessed).containsExactlyInAnyOrderElementsOf(users);
+                assertThat(usersAdded).containsExactlyInAnyOrderElementsOf(users);
                 usersAccessed.clear();
                 usersAdded.clear();
 
                 moduleMeta.callSubmodule(User.class, users, usersAdded::add, usersAccessed::add);
-                Assertions.assertThat(usersAccessed).containsExactlyInAnyOrderElementsOf(users);
-                Assertions.assertThat(usersAdded).containsExactly();
+                assertThat(usersAccessed).containsExactlyInAnyOrderElementsOf(users);
+                assertThat(usersAdded).containsExactly();
                 usersAccessed.clear();
                 usersAdded.clear();
 
                 moduleMeta.callSubmodule(User.class, users, usersAdded::add);
-                Assertions.assertThat(usersAccessed).containsExactly();
-                Assertions.assertThat(usersAdded).containsExactly();
+                assertThat(usersAccessed).containsExactly();
+                assertThat(usersAdded).containsExactly();
                 usersAccessed.clear();
                 usersAdded.clear();
 
                 moduleMeta.callSubmodule(User.class, users);
-                Assertions.assertThat(users).containsExactly(worker.getUser());
+                assertThat(users).containsExactly(worker.getUser());
 
-                moduleMeta.callSubmodule(User.class, User.class, usersAdded::add);
-                Assertions.assertThat(usersAdded).containsExactlyInAnyOrderElementsOf(users);
+                moduleMeta.callSubmodule(User.class, worker::getUser, usersAdded::add);
+                assertThat(usersAdded).containsExactlyInAnyOrderElementsOf(users);
                 usersAdded.clear();
 
-                moduleMeta.callSubmodule(User.class, new GenericType<User>() {
-                }, usersAdded::add);
-                Assertions.assertThat(usersAdded).containsExactlyInAnyOrderElementsOf(users);
+                moduleMeta.callSubmodule(User.class, worker::getUser, usersAdded::add);
+                assertThat(usersAdded).containsExactlyInAnyOrderElementsOf(users);
                 usersAdded.clear();
             });
         }

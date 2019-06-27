@@ -5,7 +5,6 @@ import jdbi_modules.ModuleMeta;
 import jdbi_modules.SqlGenerator;
 import jdbi_modules.Store;
 import org.jdbi.v3.core.Handle;
-import org.jdbi.v3.core.generic.GenericType;
 import org.jdbi.v3.core.mapper.ColumnMapper;
 import org.jdbi.v3.core.statement.Query;
 import org.jdbi.v3.core.statement.StatementContext;
@@ -13,16 +12,9 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.sql.ResultSet;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Set;
-import java.util.Stack;
+import java.util.*;
 import java.util.function.Consumer;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 /**
@@ -171,7 +163,7 @@ public class ModuleMetaGenerator<Type, KeyType, SqlType extends jdbi_modules.Sql
 
         @Override
         @SuppressWarnings("unchecked")
-        public <T, CollectionType extends Collection<T>> ModuleMeta<KeyType> callSubmodule(final @NotNull KeyType key, final @NotNull CollectionType collection) {
+        public <T> ModuleMeta<KeyType> callSubmodule(final @NotNull KeyType key, final @NotNull Collection<T> collection) {
             final ModuleMetaImpl<T, KeyType, SqlType, SqlGenerator<SqlType>> module = (ModuleMetaImpl<T, KeyType, SqlType, SqlGenerator<SqlType>>) submodules.get(key);
             if (Objects.nonNull(module)) {
                 module.call(collection);
@@ -186,9 +178,9 @@ public class ModuleMetaGenerator<Type, KeyType, SqlType extends jdbi_modules.Sql
 
         @Override
         @SuppressWarnings("unchecked")
-        public <T, CollectionType extends Collection<T>> ModuleMeta<KeyType> callSubmodule(final @NotNull KeyType key,
-                                                                                           final @NotNull CollectionType collection,
-                                                                                           final @NotNull Consumer<T> enricher) {
+        public <T> ModuleMeta<KeyType> callSubmodule(final @NotNull KeyType key,
+                                                     final @NotNull Collection<T> collection,
+                                                     final @NotNull Consumer<T> enricher) {
             final ModuleMetaImpl<T, KeyType, SqlType, SqlGenerator<SqlType>> module = (ModuleMetaImpl<T, KeyType, SqlType, SqlGenerator<SqlType>>) submodules.get(key);
             if (Objects.nonNull(module)) {
                 module.call(collection, enricher);
@@ -220,27 +212,25 @@ public class ModuleMetaGenerator<Type, KeyType, SqlType extends jdbi_modules.Sql
         }
 
         @Override
-        @SuppressWarnings("unchecked")
-        public <T> T callSubmodule(final @NotNull KeyType key, final @NotNull Class<T> type) {
+        public <T> T callSubmodule(@NotNull KeyType key, @NotNull Supplier<T> getter) {
             final ModuleMetaImpl<T, KeyType, SqlType, SqlGenerator<SqlType>> module = (ModuleMetaImpl<T, KeyType, SqlType, SqlGenerator<SqlType>>) submodules.get(key);
+            final LinkedList<T> list = new LinkedList<>();
+            final T bean = getter.get();
+            if (bean != null) {
+                list.add(bean);
+            }
+
             if (Objects.nonNull(module)) {
-                LinkedList<T> list = new LinkedList<>();
                 module.call(list);
+
                 return list.stream().findFirst().orElse(null);
             }
             final FallbackMeta<T> fallbackMeta = (FallbackMeta<T>) fallbacks.get(key);
             if (Objects.nonNull(fallbackMeta)) {
-                LinkedList<T> list = new LinkedList<>();
                 fallbackMeta.call(list);
                 return list.stream().findFirst().orElse(null);
             }
             return null;
-        }
-
-        @Override
-        @SuppressWarnings("unchecked")
-        public <T> T callSubmodule(final @NotNull KeyType key, final @NotNull GenericType<T> type) {
-            return (T) callSubmodule(key, Object.class);
         }
 
         public <CollectionType extends Collection<Type>> void call(final @NotNull CollectionType collection) {
