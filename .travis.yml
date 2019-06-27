@@ -13,6 +13,12 @@ matrix:
     - ci/ci-test.sh
     - bash <(curl -s https://codecov.io/bash)
     jdk: oraclejdk11
+  - script:	
+    - ci/ci-test.sh	
+    jdk: openjdk12
+  - script:	
+    - ci/ci-test.sh	
+    jdk: openjdk10
 
 cache:
   directories:

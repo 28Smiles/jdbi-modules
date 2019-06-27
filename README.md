@@ -9,8 +9,7 @@ It is built on top of [Jdbi](http://jdbi.org/).
 
 ## Getting started
 ### Prerequisites
-This library supports Java 10 and 11.
-The language level is still Java 10, but the Java 10 Worker was discontinued.
+This library supports Java 10, 11 and 12.
 
 ## Contributing
 ### Build
