@@ -212,12 +212,11 @@ public class ModuleMetaGenerator<Type, KeyType, SqlType extends jdbi_modules.Sql
         }
 
         @Override
-        public <T> T callSubmodule(@NotNull KeyType key, @NotNull Supplier<T> getter) {
+        public <T> T callSubmodule(@NotNull KeyType key, @Nullable T obj) {
             final ModuleMetaImpl<T, KeyType, SqlType, SqlGenerator<SqlType>> module = (ModuleMetaImpl<T, KeyType, SqlType, SqlGenerator<SqlType>>) submodules.get(key);
             final LinkedList<T> list = new LinkedList<>();
-            final T bean = getter.get();
-            if (bean != null) {
-                list.add(bean);
+            if (obj != null) {
+                list.add(obj);
             }
 
             if (Objects.nonNull(module)) {

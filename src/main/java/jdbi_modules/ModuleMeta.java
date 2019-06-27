@@ -1,6 +1,7 @@
 package jdbi_modules;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Collection;
 import java.util.function.Consumer;
@@ -24,18 +25,18 @@ public interface ModuleMeta<KeyType> {
     Store getStore();
 
     /**
-     * @param key              the key
-     * @param collection       the collection
-     * @param <T>              the type of the elements of the collection
+     * @param key        the key
+     * @param collection the collection
+     * @param <T>        the type of the elements of the collection
      * @return this
      */
     <T> ModuleMeta<KeyType> callSubmodule(@NotNull KeyType key, @NotNull Collection<T> collection);
 
     /**
-     * @param key              the key
-     * @param collection       the collection
-     * @param enricher         the consumer to apply after adding something to the collection
-     * @param <T>              the type of the elements of the collection
+     * @param key        the key
+     * @param collection the collection
+     * @param enricher   the consumer to apply after adding something to the collection
+     * @param <T>        the type of the elements of the collection
      * @return this
      */
     <T> ModuleMeta<KeyType> callSubmodule(@NotNull KeyType key, @NotNull Collection<T> collection, Consumer<T> enricher);
@@ -52,12 +53,22 @@ public interface ModuleMeta<KeyType> {
     <T, CollectionType extends Collection<T>> ModuleMeta<KeyType> callSubmodule(@NotNull KeyType key, @NotNull CollectionType collection, Consumer<T> enricher, Consumer<T> accessed);
 
     /**
+     * @param key the key
+     * @param obj the object or null to be used in the subjected module
+     * @param <T> the type expected
+     * @return the value fetched
+     */
+    <T> T callSubmodule(@NotNull KeyType key, @Nullable T obj);
+
+    /**
      * @param key    the key
      * @param getter the getter
      * @param <T>    the type expected
      * @return the value fetched
      */
-    <T> T callSubmodule(@NotNull KeyType key, @NotNull Supplier<T> getter);
+    default  <T> T callSubmodule(@NotNull KeyType key, @NotNull Supplier<T> getter) {
+        return callSubmodule(key, getter.get());
+    }
 
     /**
      * @param key    the key
