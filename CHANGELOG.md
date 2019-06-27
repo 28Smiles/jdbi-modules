@@ -1,3 +1,6 @@
+# v2.0.1
+ - Add function to module meta
+
 # v2.0.0
  - Fix object persistent single bean mapping methods
  - Remove extraneous generic type of module meta method
