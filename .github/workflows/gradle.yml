@@ -22,8 +22,21 @@ jobs:
       uses: actions/setup-java@v1
       with:
         java-version: 11
+    - name: Install Postgresql 11
+      uses: harmon758/postgresql-action@v1
+      with:
+        postgresql version: '11'
+        postgresql db: jdbi_modules
+        postgresql user: root
+        postgresql password: root
     - name: Run Jacoco
       run: ./gradlew jacoco
+      env:
+        DEDICATED_TEST_DATABASE_HOST: 127.0.0.1
+        DEDICATED_TEST_DATABASE_NAME: jdbi_modules
+        DEDICATED_TEST_DATABASE_USER: root
+        DEDICATED_TEST_DATABASE_PASSWORD: root
+        DEDICATED_TEST_DATABASE_PORT: 5432
     - name: Upload to Codecov
       run: bash <(curl -s https://codecov.io/bash)
       env:
@@ -37,5 +50,18 @@ jobs:
       uses: actions/setup-java@v1
       with:
         java-version: 12
+    - name: Install Postgresql 11
+      uses: harmon758/postgresql-action@v1
+      with:
+        postgresql version: '11'
+        postgresql db: jdbi_modules
+        postgresql user: root
+        postgresql password: root
     - name: Run Jacoco
       run: ./gradlew jacoco
+      env:
+        DEDICATED_TEST_DATABASE_HOST: 127.0.0.1
+        DEDICATED_TEST_DATABASE_NAME: jdbi_modules
+        DEDICATED_TEST_DATABASE_USER: root
+        DEDICATED_TEST_DATABASE_PASSWORD: root
+        DEDICATED_TEST_DATABASE_PORT: 5432
