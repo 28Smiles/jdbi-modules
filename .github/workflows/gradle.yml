@@ -11,7 +11,8 @@ jobs:
       uses: actions/setup-java@v1
       with:
         java-version: 11
-    - run: ./gradlew checkstyleMain
+    - name: Run Checkstyle
+      run: ./gradlew checkstyleMain
   jacoco_11:
     runs-on: ubuntu-latest
     needs: lint
